@@ -1,0 +1,7 @@
+{
+  "name": "website_3ddata",
+  "short_name": "website_3ddata",
+  "description": "Sales website for 3D data",
+  "start_url": "/",
+  "display": "standalone"
+}

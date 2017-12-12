@@ -1,0 +1,118 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid-column.html">
+
+<dom-module id="pricing-dialog">
+
+<template>
+<style include="iron-flex iron-flex-alignment"></style>
+<style include="geodan-style">
+    #dialog {
+        width: 50%;
+    }
+</style>
+<paper-dialog id='dialog'>
+  <h2>Prijsinformatie</h2>
+  <paper-dialog-scrollable>
+        <vaadin-grid items="[[priceclasses]]">
+            <vaadin-grid-column width="20%">
+                <template class="header"></template>
+                <template>[[item.class]]</template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="10%">
+                <template class="header">Gebouwen<br>Prijs/km&sup2;</template>
+                <template>&euro; [[item.gebouwen]]</template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="calc(10% - 100px)">
+                <template class="header">Hoogtelijnen<br>Prijs/km&sup2;</template>
+                <template>&euro; [[item.hoogtelijnen]]</template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="calc(10% - 100px)">
+                <template class="header">Bodemgebieden<br>Prijs/km&sup2;</template>
+                <template>&euro; [[item.bodemgebieden]]</template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="calc(10% - 100px)">
+                <template class="header">Totaal<br>Prijs/km&sup2;</template>
+                <template>&euro; [[item.totaal]]</template>
+            </vaadin-grid-column>
+        </vaadin-grid>
+        <p>
+            Bij een bestelling van 22 km2 geldt de km2-prijs ook voor de eerste 10 kilometervlakken. Zo bouw je een aardige korting op. 				
+        </p>
+        <p>
+            Ook als je niet nu maar later meer km's model wenst dan profiteer je van korting met onze strippenkaart. 				
+            Je kan de strippenkaart in de loop van het jaar besteden. Het tegoed vervalt een jaar na aankoop.				
+            Met een strippenkaart voor 50 km2, download je bijvoorbeeld nu 12 km2 en later in het jaar 15 km2 en nog eens 23 km2. Tot je kaart op is.				
+        </p>
+        <vaadin-grid items="[[strippenkaart]]">
+            <vaadin-grid-column width="20%">
+                <template class="header"></template>
+                <template>[[item.class]]</template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="10%">
+                <template class="header">Gebouwen<br>Prijs</template>
+                <template>&euro; [[item.gebouwen]]</template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="calc(10% - 100px)">
+                <template class="header">Hoogtelijnen<br>Prijs</template>
+                <template>&euro; [[item.hoogtelijnen]]</template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="calc(10% - 100px)">
+                <template class="header">Bodemgebieden<br>Prijs</template>
+                <template>&euro; [[item.bodemgebieden]]</template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="calc(10% - 100px)">
+                <template class="header">Totaal<br>Prijs</template>
+                <template>&euro; [[item.totaal]]</template>
+            </vaadin-grid-column>
+        </vaadin-grid>            
+    
+  </paper-dialog-scrollable>
+  <div class="buttons">
+    <paper-button dialog-dismiss>Sluit</paper-button>
+  </div>
+</paper-dialog>
+</template>
+ <!--</dom-module>-->
+
+<script>
+class PricingDialog extends Polymer.Element {
+	static get is() { return 'pricing-dialog'; }
+	static get properties() {
+        return {
+            priceclasses: {
+                type: Object,
+                value: function(){
+                    return  [
+                        {class: 'tot 10 km²',gebouwen: 250,hoogtelijnen: 50,bodemgebieden: 25,totaal: 325},
+                        {class: 'tot 20 km²',gebouwen: 130,hoogtelijnen: 30,bodemgebieden: 15,totaal: 175},
+                        {class: 'tot 50 km²',gebouwen: 95,hoogtelijnen: 20,bodemgebieden: 10,totaal: 125},
+                        {class: 'tot 100 km²',gebouwen: 75,hoogtelijnen: 15,bodemgebieden: 8,totaal: 98},
+                        {class: 'tot 200 km²',gebouwen: 60,hoogtelijnen: 12,bodemgebieden: 6,totaal: 78},
+                        {class: 'boven 200 km²',gebouwen: 50,hoogtelijnen: 10,bodemgebieden: 5,totaal: 65}
+                    ];
+                }
+            },
+            strippenkaart: {
+                type: Object,
+                value: function(){
+                    return  [
+                        {class: '10 km²',gebouwen: 1300,hoogtelijnen: 300,bodemgebieden: 150,totaal: 1750},
+                        {class: '25 km²',gebouwen: 2375,hoogtelijnen: 500,bodemgebieden: 250,totaal: 3125},
+                        {class: '50 km²',gebouwen: 3750,hoogtelijnen: 750,bodemgebieden: 400,totaal: 4900},
+                        {class: '100 km²',gebouwen: 6000,hoogtelijnen: 1200,bodemgebieden: 600,totaal: 7800},
+                        {class: '200 km²',gebouwen: 10000,hoogtelijnen: 2000,bodemgebieden: 1000,totaal: 13000}
+                    ];
+                }
+            }
+        }
+    }
+    open(){
+        this.$.dialog.open();
+    }
+}
+window.customElements.define(PricingDialog.is, PricingDialog);
+</script>
+</dom-module>

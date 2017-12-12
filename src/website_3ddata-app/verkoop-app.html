@@ -1,0 +1,513 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<!--
+<link rel="import" href="../../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+-->
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+
+<link rel="import" href="../../bower_components/mapbox-gl/mapbox-gl.html">
+<link rel="import" href="gm-search.html">
+<link rel="import" href="pricing-dialog.html">
+<link rel="import" href="offerte-dialog.html">
+<!-- import CSS mixin shim -->
+<link rel="import" href="geodan-style.html">
+<script src="https://unpkg.com/shapefile@0.6"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.3/turf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
+<dom-module id="verkoop-app">
+<template>
+<style include="iron-flex iron-flex-alignment"></style>
+<style include="geodan-style">
+	:host {
+        display: block;
+    }
+
+	paper-button.geodan {
+		background:var(--geodan-button-normal);
+  		color:white;
+		--paper-button-ink-color: var(--geodan-button-pressed);
+		--paper-button-disabled: var(--geodan-button-disabled);
+	}
+	paper-button.geodan:hover {
+		background:var(--geodan-button-hover);
+	}
+	
+	a {
+		text-decoration: none;
+	}
+
+	app-header {
+		height: 80px;
+	}
+
+	app-toolbar {
+		background: var(--geodan-header-background);
+		color: white;
+		--app-toolbar-font-size: 18px;
+		font-family: var(--geodan-light-font);
+		font-weight: var(--geodan-light-fontweight);
+		height: 80px;
+	}
+
+	paper-tab {
+		--paper-tab-ink: var(--geodan-button-normal);
+	}
+
+	paper-tabs {
+		--paper-tabs-selection-bar-color: var(--geodan-button-normal);
+
+	}
+
+	paper-checkbox {
+		--paper-checkbox-unchecked-color: var(--geodan-checkbox-unchecked);
+		--paper-checkbox-unchecked-ink-color: var(--geodan-checkbox-checked);
+		--paper-checkbox-checked-color: var(--geodan-checkbox-checked);
+		--paper-checkbox-checked-ink-color: var(--geodan-checkbox-unchecked);
+		--paper-checkbox-checkmark-color: white;
+	}
+	.drawerblock {
+		border-style: solid;
+		border-width: 2px;
+		border-color: var(--geodan-button-normal);
+		padding: 5px;
+		margin: 5px;
+	}
+	
+	drawerblock > paper-card {
+      box-sizing: border-box;
+      max-width: 184px;
+      margin: 3px;
+      flex: 0 0 auto;
+    }
+
+    mapbox-gl {
+        height: 100%;
+    }
+ 
+ </style>
+ <pricing-dialog id='pricingdialog' ></pricing-dialog>
+ <offerte-dialog id='offertedialog' panden=[[_panden]] breeklijnen=[[_breeklijnen]] bodemgebieden=[[_hardzacht]] hokken=[[_hokken]] totaal=[[_totaal]]></offerte-dialog>
+ <app-drawer-layout fullbleed>
+		<app-drawer slot="drawer" id='menu'>
+		
+			<app-toolbar class="medium-tall">
+				<div bottom-item>
+					<paper-tabs  class="bottom" selected="{{tabselected}}">
+						<paper-tab>Bestelling</paper-tab>
+						<paper-tab>Lagen</paper-tab>
+					</paper-tabs>
+				</div>
+			</app-toolbar>
+			
+			<iron-pages selected=[[tabselected]]>
+                <div>
+					<gm-geosearch 
+						servicekey="2021faff-cc40-11e6-a549-52540031712c"
+						on-goto-coords="zoomTo"
+						></gm-geosearch>
+
+					<paper-card class='drawerblock'>
+						Stap1
+						<div class="card-content">
+
+							<h4>Gewenste bestanden</h4>
+							<paper-checkbox checked={{_panden}}>Gebouwen</paper-checkbox>
+							<paper-checkbox checked={{_breeklijnen}}>Hoogtelijnen</paper-checkbox>
+							<paper-checkbox checked={{_hardzacht}}>Bodemvlakken</paper-checkbox>
+							<hr>
+							Geselecteerd: <span>[[_hokken]]</span> km&sup2;<br>
+							Totaal: &euro; <span>[[_totaal]]</span>,-
+						</div>
+                        <div class="card-actions">
+							<div class="horizontal justified">
+								Prijs per km&sup2; <paper-icon-button icon="icons:info" on-click="openpricingdialog"></paper-icon-button>
+								Productspecificaties <a href="./data/Specificaties_3D-model_20171206.pdf"><paper-icon-button icon="icons:info"></paper-icon-button></a>
+							</div>
+						</div>
+						
+					</paper-card>
+					<paper-card class='drawerblock'>
+						<div class="card-content">
+							<p>Selecteer km-vlakken in de kaart (muiskliks) en/of</p>
+							upload studiegebied <paper-icon-button icon="icons:file-upload"></paper-icon-button>
+							<input label="upload" type="file" on-change="fileupload">
+							</input>
+						</div>
+					</paper-card>
+
+					<paper-card class='drawerblock'>
+						<div class="card-content">
+							Bestel
+							<paper-icon-button icon="icons:shopping-cart" on-click="openoffertedialog"></paper-icon-button>
+						</div>
+					</paper-card>
+					<paper-card class='drawerblock'>
+						<div class="card-content">
+								Download proefset
+								<paper-icon-button icon="icons:file-download"></paper-icon-button>
+						</div>
+					</paper-card>
+					<paper-card class='drawerblock'>
+						<div class="card-content">
+								Meer informatie….<br>
+								Henk de Kluijver <br>
+								+31 (0)6 29076163
+						</div>
+					</paper-card>
+					
+
+                </div>
+				<div>
+					<template is='dom-repeat' items=[[layers]]>
+							<paper-item>
+								<paper-checkbox on-change='layertoggle' checked=[[item.active]] disabled=[[item.hidden]]>
+										</paper-checkbox>
+								<paper-item-body  two-line>
+									<div class="layout horizontal">
+										<span class='flex'>[[item.displayName]]</span>
+										<!--<paper-spinner active=[[item.loading]]></paper-spinner>-->
+										
+									</div>
+									<div secondary>[[item.description]]</div>
+								</paper-item-body>
+								<template is='dom-if' if=[[item.downloadurl]]>
+									<a href=[[item.downloadurl]]>
+										<paper-icon-button icon="file-download" style="color: grey;"></paper-icon-button>
+									</a>
+								</template>
+							</paper-item>
+						</template>
+						<!--<a href="./data/geomilieu.zip">-->
+						<paper-button raised class="geodan" disabled>
+							<iron-icon icon="file-download"></iron-icon>Geomilieu
+						</paper-button>
+						<!--</a>-->
+				</div>
+				
+			</iron-pages>
+			
+		</app-drawer>
+		<app-header-layout fullbleed>
+			<app-header slot="header" class="flex">
+				<app-toolbar class="medium-tall" justify='justified'>
+					<h1>3D model voor SRM2-geluidsstudies</h1>
+				</app-toolbar>
+			</app-header>
+			<div class="flex">
+				<content></content>
+                <mapbox-gl id="map"
+                    interactive
+                    map="{{map}}"
+                    script-src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js"
+					access-token="pk.eyJ1IjoidGlsdCIsImEiOiJjaXl5dnAydjYwMDAxMnFwYWR1Z2ZjMngwIn0.JYt8pUcgFf9QETgo5FzA0A"
+					map-style-url="mapbox://styles/mapbox/light-v9"
+					latitude=52.25993
+                    longitude=4.55382
+                    zoom=14
+                    pitch=45
+                    bearing=0></mapbox-gl>
+			</div>
+			<footer>
+					&copy; Geodan
+			</footer>
+		
+	</app-header-layout>
+	
+</app-drawer-layout>
+</template>
+ <!--</dom-module>-->
+
+<script>
+class VerkoopApp extends Polymer.Element {
+	static get is() { return 'verkoop-app'; }
+	static get properties() {
+		return {
+			_panden: {
+				type: Boolean,
+				value: true
+			},
+			_breeklijnen: {
+				type: Boolean,
+				value: true
+			},
+			_hardzacht: {
+				type: Boolean,
+				value: true
+			},
+			_hokken: {value: 0},
+			_totaal: {value: 0},
+            fillextrusionheight: {
+                type: Object,
+                value: function() {
+                    return {
+                        'type': 'identity',
+                        'property': 'relhoogte'
+                    };
+                }
+            },
+            selectedHokken: {
+                type: Array,
+                value: function(){
+                    return [];
+                },
+                observer: '_calcTotaal'
+
+            },
+			tabselected: {
+				type: Number,
+				value: 0
+			},
+			selectedLayers: {
+				type: Array
+				//observer: '_selectedLayersChanged'
+			},
+			map: {
+				type: Object,
+				observer: '_mapChanged'
+			},
+			layers: {
+				type: Array,
+				value: function(){
+					return [
+
+					];
+				}
+			}
+		}
+	}
+    static get observers() {
+		return [
+        '_calcTotaal(selectedHokken.*,_panden, _hardzacht, _breeklijnen)'
+    	]
+	}
+
+
+	readerLoad() {
+		
+        
+    }
+	fileupload(a,b,c) {
+		var self = this;
+        let file = a.currentTarget.files[0];
+		var readerPromise = new Promise(function(resolve, reject){
+			var reader = new FileReader();
+        	reader.onload = function(){
+				if (this.readyState !== 2 || this.error) {
+					return;
+				}
+				else {
+					var geojson = {
+							"type": "FeatureCollection",
+							"features": []
+					};
+					shapefile.open(this.result)
+					.then(source => source.read()
+						.then(function log(result) {
+							if (result.done) return geojson;
+							geojson.features.push(result.value);
+							return source.read().then(log);
+						}))
+					.then(geojson => {
+						resolve(geojson);
+						
+					})
+					.catch(error => reject(error.stack));
+				}
+			};
+			reader.readAsArrayBuffer(file);
+
+		}).then(geojson => {
+			var firstProjection = '+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +towgs84=565.2369,50.0087,465.658,-0.406857330322398,0.350732676542563,-1.8703473836068,4.0812 +no_defs <>';
+			var secondProjection = 'EPSG:4326';
+			turf.coordEach(geojson, function (currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
+				geojson.features[featureIndex].geometry.coordinates[geometryIndex][coordIndex] = proj4(firstProjection,secondProjection,currentCoord);
+			});
+			turf.geomEach(geojson.features, function(currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
+
+			});
+
+			self.map.addLayer({
+				"id": "lines",
+				'type': 'fill',
+				"source": {
+					"type": "geojson",
+					"data": geojson
+				},
+				'layout': {},
+				'paint': {
+					'fill-color': '#088',
+					'fill-opacity': 0.8
+				}
+			});
+
+		});
+
+		
+        
+    }
+
+    _calcTotaal(hokken, panden, hardzacht,breeklijnen){
+        var unitprice = 0;
+        unitprice += panden==true?50:0;
+        unitprice += breeklijnen==true?16:0;
+        unitprice += hardzacht==true?5:0;
+        this._hokken = this.selectedHokken.length;
+        this._totaal = this.selectedHokken.length * unitprice;
+    }
+
+	_mapChanged(){
+        var self =this;
+        this.map.on('load', function() {
+            var map = self.map;
+			window.map = map;
+            map.addSource('kmhokken', {
+                type: 'vector',
+                tiles:["http://metis:3011/mvt/km_hokken/{z}/{x}/{y}.mvt"],
+                minzoom: 9,
+                maxzoom: 20
+                //data: "./data/km_hokken.geojson"
+            });
+            map.addLayer({
+                "id": "kmhokken",
+                "type": "fill",
+                "source": "kmhokken",
+                "source-layer": "km_hokken",
+                "paint": {
+                    "fill-outline-color": "rgba(0,0,0,0.1)",
+                    "fill-color": "rgba(0,0,0,0)"
+                },
+            }); 
+            map.addLayer({
+                "id": "kmhokken-highlighted",
+                "type": "fill",
+                "source": "kmhokken",
+                "source-layer": "km_hokken",
+                "paint": {
+                    "fill-outline-color": "#484896",
+                    "fill-color": "#6e599f",
+                    "fill-opacity": 0.75
+                },
+                "filter": ["in", "uid", ""]
+            }); 
+
+
+            map.addSource("odwh", {
+                type: 'vector',
+                tiles:["http://metis:3011/mvt/odwh/{z}/{x}/{y}.mvt"],
+                minzoom: 13,
+                maxzoom: 18
+            });
+            map.addLayer({
+                'id': 'building-extrusion',
+                'type': 'fill-extrusion',
+                'source': 'odwh',
+                "source-layer": "odwh",
+
+                'paint': {
+                    'fill-extrusion-color': {
+                        "property": "relhoogte",
+                        "stops": [
+                        [0, 'hsl(203,73%,67%)'],
+                        [1, 'hsl(187,56%,69%)'],
+                        [2, 'hsl(161,47%,76%)'],
+                        [3, 'hsl(113,26%,87%)'],
+                        [4, 'hsl(170,38%,96%)'],
+                        [5, 'hsl(44,45%,99%)'],
+                        [7, 'hsl(36,53%,99%)'],
+                        [9, 'hsl(30,62%,99%)'],
+                        [11, 'hsl(14,73%,96%)'],
+                        [13, 'hsl(353,71%,84%)'],
+                        [15, 'hsl(335,99%,62%)'],
+                        [20, 'hsl(356,99%,50%)'],
+                        [30, 'hsl(356,99%,27%)'],
+                        [40, 'hsl(356,100%,13%)']
+                        ]
+                    },
+                    'fill-extrusion-height': {
+                        'property': 'relhoogte',
+                        'type': 'identity'
+                    },
+                    'fill-extrusion-opacity': 0.8
+                }
+            });
+
+            
+
+
+           
+            
+
+            map.on('click', function(e) {
+                // set bbox as 5px reactangle area around clicked point
+                var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
+                var features = map.queryRenderedFeatures(bbox, { layers: ['kmhokken'] });
+
+                // Run through the selected features and set a filter
+                // to match features with unique FIPS codes to activate
+                // the `counties-highlighted` layer.
+                features.forEach(feature=>{
+                    var i = self.selectedHokken.indexOf(feature.properties.uid);
+                    if (i < 0) {
+                        self.push('selectedHokken',feature.properties.uid);
+                    }
+                    else {
+                        self.splice('selectedHokken',i,1);
+                    }
+                });
+
+                var filter = ['in', 'uid'];
+                filter = filter.concat(self.selectedHokken);
+                
+                map.setFilter("kmhokken-highlighted", filter);
+            });
+            self.layers = map.layers;
+        });
+    }
+	zoomTo(coords){
+		this.map.flyTo({
+			center: [
+				coords.detail[0],
+				coords.detail[1]
+			]
+		});
+	}
+	ready(){
+		super.ready();
+		this.layers.forEach(function(l,i){
+			
+		});
+	}
+	openpricingdialog(){
+		this.$.pricingdialog.open();
+	}
+	openoffertedialog(){
+		this.$.offertedialog.open();
+	}
+}
+window.customElements.define(VerkoopApp.is, VerkoopApp);
+</script>
+</dom-module>

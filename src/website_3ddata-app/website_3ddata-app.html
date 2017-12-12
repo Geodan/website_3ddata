@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="website_3ddata-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class Website_3ddataApp extends Polymer.Element {
+      static get is() { return 'website_3ddata-app'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'website_3ddata-app'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(Website_3ddataApp.is, Website_3ddataApp);
+  </script>
+</dom-module>
