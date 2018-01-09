@@ -89,6 +89,14 @@
 		--paper-checkbox-checked-ink-color: var(--geodan-checkbox-unchecked);
 		--paper-checkbox-checkmark-color: white;
 	}
+	#notes {
+      @apply --layout-vertical;
+      height: 344px;
+    }
+	paper-card {
+		flex: 0 0 auto;
+		padding: 1px;
+	}
 	.drawerblock {
 		border-style: solid;
 		border-width: 2px;
@@ -116,22 +124,30 @@
 		
 			<app-toolbar class="medium-tall">
 				<div bottom-item>
+					
+						<!--
 					<paper-tabs  class="bottom" selected="{{tabselected}}">
 						<paper-tab>Bestelling</paper-tab>
 						<paper-tab>Lagen</paper-tab>
 					</paper-tabs>
+				-->
 				</div>
 			</app-toolbar>
 			
 			<iron-pages selected=[[tabselected]]>
-                <div>
-					<gm-geosearch 
+                <div id="notes">
+					<paper-card class='drawerblock'>
+							Stap 1
+							<div class="card-content">
+						<gm-geosearch 
 						servicekey="2021faff-cc40-11e6-a549-52540031712c"
 						on-goto-coords="zoomTo"
 						></gm-geosearch>
-
+						</div>
+					</paper-card>
+					
 					<paper-card class='drawerblock'>
-						Stap1
+						Stap 2
 						<div class="card-content">
 
 							<h4>Gewenste bestanden</h4>
@@ -145,22 +161,28 @@
                         <div class="card-actions">
 							<div class="horizontal justified">
 								Prijs per km&sup2; <paper-icon-button icon="icons:info" on-click="openpricingdialog"></paper-icon-button>
-								Productspecificaties <a href="./data/Specificaties_3D-model_20171206.pdf"><paper-icon-button icon="icons:info"></paper-icon-button></a>
+								Productspecificaties <a href="./data/Specificaties_3D-model_20171206.pdf" download><paper-icon-button icon="icons:info"></paper-icon-button></a>
 							</div>
 						</div>
 						
 					</paper-card>
 					<paper-card class='drawerblock'>
+						Stap 3
 						<div class="card-content">
-							<p>Selecteer km-vlakken in de kaart (muiskliks) en/of</p>
+							<p>Selecteer km-vlakken in de kaart (muiskliks) <br>
+								of <a href="mailto:henk.de.kluijver@geodan.nl">mail</a> je onderzoeksgebied</p>
+							<!--
+							en/of</p>
 							upload studiegebied <paper-icon-button icon="icons:file-upload"></paper-icon-button>
 							<input label="upload" type="file" on-change="fileupload">
+							-->
 							</input>
 						</div>
 					</paper-card>
 
-					<paper-card class='drawerblock'>
-						<div class="card-content">
+					<paper-card class='drawerblock' >
+						Stap 4
+						<div class="card-content  layout flex">
 							Bestel
 							<paper-icon-button icon="icons:shopping-cart" on-click="openoffertedialog"></paper-icon-button>
 						</div>
@@ -174,7 +196,7 @@
 					<paper-card class='drawerblock'>
 						<div class="card-content">
 								Meer informatie….<br>
-								Henk de Kluijver <br>
+								<a href="mailto:henk.de.kluijver@geodan.nl">henk.de.kluijver@geodan.nl</a> <br>
 								+31 (0)6 29076163
 						</div>
 					</paper-card>
@@ -224,10 +246,10 @@
                     map="{{map}}"
                     script-src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js"
 					access-token="pk.eyJ1IjoidGlsdCIsImEiOiJjaXl5dnAydjYwMDAxMnFwYWR1Z2ZjMngwIn0.JYt8pUcgFf9QETgo5FzA0A"
-					map-style-url="mapbox://styles/mapbox/light-v9"
-					latitude=52.25993
-                    longitude=4.55382
-                    zoom=14
+					map-style-url="mapbox://styles/mapbox/streets-v9"
+					latitude=52.255
+                    longitude=4.555
+                    zoom=17
                     pitch=45
                     bearing=0></mapbox-gl>
 			</div>
@@ -401,7 +423,35 @@ class VerkoopApp extends Polymer.Element {
                     "fill-color": "rgba(0,0,0,0)"
                 },
             }); 
+            
+
+			map.addSource("odwh_bodemvlakken", {
+                type: 'vector',
+                tiles:["http://metis:3011/mvt/odwh_bodemvlakken/{z}/{x}/{y}.mvt"],
+                minzoom: 13,
+                maxzoom: 18
+            });
             map.addLayer({
+                'id': 'odwh_bodemvlakken',
+                'type': 'fill',
+                'source': 'odwh_bodemvlakken',
+                "source-layer": "odwh_bodemvlakken",
+
+                'paint': {
+                    'fill-color': {
+                        "property": "type",
+						"type": "categorical",
+                        "stops": [
+                        ['BGTwater', 'rgb(16,247,254)'],
+                        ['BGTverhard', 'rgb(200,200,200)'],
+						['BGT_onverhard', 'hsl(78,53%,87%)']
+                        ]
+                    },
+                    'fill-opacity': 1
+                }
+            });
+
+			map.addLayer({
                 "id": "kmhokken-highlighted",
                 "type": "fill",
                 "source": "kmhokken",
@@ -413,7 +463,6 @@ class VerkoopApp extends Polymer.Element {
                 },
                 "filter": ["in", "uid", ""]
             }); 
-
 
             map.addSource("odwh", {
                 type: 'vector',
@@ -428,35 +477,73 @@ class VerkoopApp extends Polymer.Element {
                 "source-layer": "odwh",
 
                 'paint': {
+					
                     'fill-extrusion-color': {
+                        "property": "relhoogte",
+                        "stops": [
+						[0,  'rgb(26,150,63)'],
+                        [3.5,  'rgb(90,181,83)'],
+                        [4.9,  'rgb(151,209,100)'],
+                        [6.3,  'rgb(197,230,135)'],
+                        [7.6, 'rgb(236,247,173)'],
+                        [8.8, 'rgb(255,237,171)'],
+                        [10.3, 'rgb(255,201,130)'],
+                        [12.6, 'rgb(250,157,90)'],
+                        [17.1, 'rgb(232,90,58)'],
+                        [27.1, 'rgb(214,24,97)'],
+						[100, 'rgb(214,24,97)']
+                        ]
+                    },/*
+					'fill-extrusion-color': {
                         "property": "relhoogte",
                         "stops": [
                         [0, 'hsl(203,73%,67%)'],
                         [1, 'hsl(187,56%,69%)'],
                         [2, 'hsl(161,47%,76%)'],
                         [3, 'hsl(113,26%,87%)'],
-                        [4, 'hsl(170,38%,96%)'],
-                        [5, 'hsl(44,45%,99%)'],
-                        [7, 'hsl(36,53%,99%)'],
-                        [9, 'hsl(30,62%,99%)'],
-                        [11, 'hsl(14,73%,96%)'],
+                        [4, 'hsl(170,38%,49%)'],
+                        [5, 'hsl(44,45%,49%)'],
+                        [7, 'hsl(36,53%,49%)'],
+                        [9, 'hsl(30,62%,49%)'],
+                        [11, 'hsl(14,73%,49%)'],
                         [13, 'hsl(353,71%,84%)'],
                         [15, 'hsl(335,99%,62%)'],
                         [20, 'hsl(356,99%,50%)'],
                         [30, 'hsl(356,99%,27%)'],
                         [40, 'hsl(356,100%,13%)']
                         ]
-                    },
+                    },*/
                     'fill-extrusion-height': {
                         'property': 'relhoogte',
                         'type': 'identity'
                     },
-                    'fill-extrusion-opacity': 0.8
+                    'fill-extrusion-opacity': 1
                 }
             });
+			
 
             
+			// Create a popup, but don't add it to the map yet.
+			var popup = new mapboxgl.Popup({
+				closeButton: false,
+				closeOnClick: false
+			});
 
+			map.on('mouseenter', 'building-extrusion', function(e) {
+				// Change the cursor style as a UI indicator.
+				map.getCanvas().style.cursor = 'pointer';
+
+				// Populate the popup and set its coordinates
+				// based on the feature found.
+				popup.setLngLat(e.lngLat)
+					.setHTML(e.features[0].properties.adres+'<br><i>'+e.features[0].properties.functie+'</i>')
+					.addTo(map);
+			});
+
+			map.on('mouseleave', 'building-extrusion', function() {
+				map.getCanvas().style.cursor = '';
+				popup.remove();
+			});
 
            
             

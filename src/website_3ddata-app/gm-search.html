@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
@@ -12,6 +13,9 @@
 <style>
 paper-item {
 	cursor: pointer;
+}
+iron-input {
+	background: white;
 }
 </style>
 	
@@ -40,6 +44,7 @@ paper-item {
 		<paper-input id='keystring' value="{{key::input}}"
             on-input="_keyChanged"
 			placeholder="zoek een plaats" autosave="test" results="5">
+			<iron-icon icon="search" slot="prefix"></iron-icon>
 		</paper-input>
 
 		<iron-selector selected="{{selectedconfig}}">

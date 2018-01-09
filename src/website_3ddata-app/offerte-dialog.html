@@ -46,7 +46,7 @@
         margin-left: 8px;
     }
 </style>
-<paper-dialog id='dialog' opened>
+<paper-dialog id='dialog'>
   <paper-dialog-scrollable>
     <iron-form>
         <form method="get" action="">
@@ -56,9 +56,9 @@
                 
                 <b>[[hokken]]</b> km&sup2; geselecteerd voor:<br>
                 
-                <paper-checkbox checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
-                <paper-checkbox checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
-                <paper-checkbox checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
+                <paper-checkbox disabled checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
+                <paper-checkbox disabled checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
+                <paper-checkbox disabled checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
 
                 Totaalprijs: 
 
