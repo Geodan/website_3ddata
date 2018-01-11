@@ -48,60 +48,64 @@
 </style>
 <paper-dialog id='dialog'>
   <paper-dialog-scrollable>
-    <iron-form>
-        <form method="get" action="">
+    <iron-form id="gform">
+        <form method="POST" action="https://script.google.com/a/geodan.nl/macros/s/AKfycbzvArH9RXdknHFP6GujzeMVvBrH3zBzlXpZYJkaNkj8TYF5IQ/exec">
         <div class="subsection grid">
             <section>
                 <h2 id="accountInfoHeading">Bestelling</h2>
                 
                 <b>[[hokken]]</b> km&sup2; geselecteerd voor:<br>
-                
-                <paper-checkbox disabled checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
-                <paper-checkbox disabled checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
-                <paper-checkbox disabled checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
+            
+                <paper-checkbox name="gebouwen" disabled checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
+                <paper-checkbox name="hoogtelijnen" disabled checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
+                <paper-checkbox name="bodemgebieden" disabled checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
 
                 Totaalprijs: 
 
                 <div class="row input-row">
-                    <paper-input label="Code strippenkaart"></paper-input>
+                    <paper-input name="strippenkaart" label="Code strippenkaart"></paper-input>
                     <paper-icon-button icon="icons:info"></paper-icon-button>
                 </div>
                 <div class="row total-row">
                     <div class="flex">Totaal</div>
                     <div>&euro; [[totaal]]</div>
                 </div>
+            
             </section>
             <section>
                 <h2>Gegevens</h2>
                 <div class="row input-row">
-                    <paper-input label="Naam" required></paper-input>
+                    <paper-input name="name" label="Naam" value="Test" required></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input label="Organisatie"></paper-input>
+                    <paper-input name="organisation" label="Organisatie" value="Test"></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input label="Straat" size="200"></paper-input><paper-input label="Nummer"></paper-input>
+                    <paper-input name="street" label="Straat" size="200" value="Test"></paper-input>
+                    <paper-input name="number" label="Nummer" value=42></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input label="Postcode"></paper-input><paper-input label="Plaats"></paper-input>
+                    <paper-input name="postcode" label="Postcode" value="9999AA"></paper-input>
+                    <paper-input name="city" label="Plaats" value="Lutjebroek"></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input label="Telefoonnummer" pattern="\d{10,}"></paper-input>
+                    <paper-input name="phone" label="Telefoonnummer" pattern="\d{10,}" value="06123456789"></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input label="E-mail" required></paper-input>
+                    <paper-input name="email" label="E-mail" value="test@test.nl" required></paper-input>
                 </div>
             </section>
         </div>
         </form>
     </iron-form>
+    
     <p>
         Na het verzenden van dit bestelformulier ontvangt u ter verificatie een mail (binnen één werkdag). De bestelling wordt definitief gemaakt na akkoord op de mail.
     </p>
   </paper-dialog-scrollable>
   <div class="buttons">
     <paper-button dialog-dismiss>Sluit</paper-button>
-    <paper-button raised onclick="submitForm()">Verzend</paper-button>
+    <paper-button raised on-click="submitForm">Verzend</paper-button>
   </div>
 </paper-dialog>
 </template>
@@ -137,8 +141,26 @@ class OfferteDialog extends Polymer.Element {
     open(){
         this.$.dialog.open();
     }
+    ready(){
+        super.ready();
+        var self = this;
+        this.$.gform.addEventListener('iron-form-presubmit', function(event) {
+            self.sendForm(event);
+        });
+    }
     submitForm(){
-        debugger;
+        this.$.gform.submit();
+    }
+    sendForm(event){
+        event.preventDefault();           // we are submitting via xhr below
+        var request = event.target.request; 
+        // add form-specific values into the data
+        request.body.formDataNameOrder = JSON.stringify(["name","organisation","street","number","postcode","city","phone","email"]);
+        request.body.formGoogleSheetName = "responses"; // default sheet name
+        request.body.formGoogleSendEmail = ""; // no email by default
+
+        console.log(request.body);
+        request.generateRequest();
     }
 }
 window.customElements.define(OfferteDialog.is, OfferteDialog);
