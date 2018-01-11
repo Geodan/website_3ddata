@@ -31,6 +31,7 @@
 
 <link rel="import" href="../../bower_components/mapbox-gl/mapbox-gl.html">
 <link rel="import" href="gm-search.html">
+<link rel="import" href="opening-dialog.html">
 <link rel="import" href="pricing-dialog.html">
 <link rel="import" href="offerte-dialog.html">
 <!-- import CSS mixin shim -->
@@ -117,126 +118,87 @@
     }
  
  </style>
+ <opening-dialog id='openingdialog' opened></opening-dialog>
  <pricing-dialog id='pricingdialog' ></pricing-dialog>
  <offerte-dialog id='offertedialog' panden=[[_panden]] breeklijnen=[[_breeklijnen]] bodemgebieden=[[_hardzacht]] hokken=[[_hokken]] totaal=[[_totaal]]></offerte-dialog>
  <app-drawer-layout fullbleed>
-		<app-drawer slot="drawer" id='menu'>
+		<app-drawer slot="drawer" id='menu' >
 		
 			<app-toolbar class="medium-tall">
-				<div bottom-item>
-					
-						<!--
-					<paper-tabs  class="bottom" selected="{{tabselected}}">
-						<paper-tab>Bestelling</paper-tab>
-						<paper-tab>Lagen</paper-tab>
-					</paper-tabs>
-				-->
-				</div>
 			</app-toolbar>
-			
-			<iron-pages selected=[[tabselected]]>
-                <div id="notes">
-					<paper-card class='drawerblock'>
-							Stap 1
-							<div class="card-content">
-						<gm-geosearch 
-						servicekey="2021faff-cc40-11e6-a549-52540031712c"
-						on-goto-coords="zoomTo"
-						></gm-geosearch>
-						</div>
-					</paper-card>
-					
-					<paper-card class='drawerblock'>
-						Stap 2
+			<div id="notes" style="height: 100%; overflow: auto;">
+				<paper-card class='drawerblock'>
+						Stap 1
 						<div class="card-content">
-
-							<h4>Gewenste bestanden</h4>
-							<paper-checkbox checked={{_panden}}>Gebouwen</paper-checkbox>
-							<paper-checkbox checked={{_breeklijnen}}>Hoogtelijnen</paper-checkbox>
-							<paper-checkbox checked={{_hardzacht}}>Bodemvlakken</paper-checkbox>
-							<hr>
-							Geselecteerd: <span>[[_hokken]]</span> km&sup2;<br>
-							Totaal: &euro; <span>[[_totaal]]</span>,-
-						</div>
-                        <div class="card-actions">
-							<div class="horizontal justified">
-								Prijs per km&sup2; <paper-icon-button icon="icons:info" on-click="openpricingdialog"></paper-icon-button>
-								Productspecificaties <a href="./data/Specificaties_3D-model_20171206.pdf" download><paper-icon-button icon="icons:info"></paper-icon-button></a>
-							</div>
-						</div>
-						
-					</paper-card>
-					<paper-card class='drawerblock'>
-						Stap 3
-						<div class="card-content">
-							<p>Selecteer km-vlakken in de kaart (muiskliks) <br>
-								of <a href="mailto:henk.de.kluijver@geodan.nl">mail</a> je onderzoeksgebied</p>
-							<!--
-							en/of</p>
-							upload studiegebied <paper-icon-button icon="icons:file-upload"></paper-icon-button>
-							<input label="upload" type="file" on-change="fileupload">
-							-->
-							</input>
-						</div>
-					</paper-card>
-
-					<paper-card class='drawerblock' >
-						Stap 4
-						<div class="card-content  layout flex">
-							Bestel
-							<paper-icon-button icon="icons:shopping-cart" on-click="openoffertedialog"></paper-icon-button>
-						</div>
-					</paper-card>
-					<paper-card class='drawerblock'>
-						<div class="card-content">
-								Download proefset
-								<paper-icon-button icon="icons:file-download"></paper-icon-button>
-						</div>
-					</paper-card>
-					<paper-card class='drawerblock'>
-						<div class="card-content">
-								Meer informatie….<br>
-								<a href="mailto:henk.de.kluijver@geodan.nl">henk.de.kluijver@geodan.nl</a> <br>
-								+31 (0)6 29076163
-						</div>
-					</paper-card>
-					
-
-                </div>
-				<div>
-					<template is='dom-repeat' items=[[layers]]>
-							<paper-item>
-								<paper-checkbox on-change='layertoggle' checked=[[item.active]] disabled=[[item.hidden]]>
-										</paper-checkbox>
-								<paper-item-body  two-line>
-									<div class="layout horizontal">
-										<span class='flex'>[[item.displayName]]</span>
-										<!--<paper-spinner active=[[item.loading]]></paper-spinner>-->
-										
-									</div>
-									<div secondary>[[item.description]]</div>
-								</paper-item-body>
-								<template is='dom-if' if=[[item.downloadurl]]>
-									<a href=[[item.downloadurl]]>
-										<paper-icon-button icon="file-download" style="color: grey;"></paper-icon-button>
-									</a>
-								</template>
-							</paper-item>
-						</template>
-						<!--<a href="./data/geomilieu.zip">-->
-						<paper-button raised class="geodan" disabled>
-							<iron-icon icon="file-download"></iron-icon>Geomilieu
-						</paper-button>
-						<!--</a>-->
-				</div>
+					<gm-geosearch 
+					servicekey="2021faff-cc40-11e6-a549-52540031712c"
+					on-goto-coords="zoomTo"
+					></gm-geosearch>
+					</div>
+				</paper-card>
 				
-			</iron-pages>
-			
+				<paper-card class='drawerblock'>
+					Stap 2
+					<div class="card-content">
+
+						<h4>Gewenste bestanden</h4>
+						<paper-checkbox checked={{_panden}}>Gebouwen</paper-checkbox>
+						<paper-checkbox checked={{_breeklijnen}}>Hoogtelijnen</paper-checkbox>
+						<paper-checkbox checked={{_hardzacht}}>Bodemvlakken</paper-checkbox>
+						<hr>
+						Geselecteerd: <span>[[_hokken]]</span> km&sup2;<br>
+						Totaal: &euro; <span>[[_totaal]]</span>,-
+					</div>
+					<div class="card-actions">
+						<div class="horizontal justified">
+							Prijs per km&sup2; <paper-icon-button icon="icons:info" on-click="openpricingdialog"></paper-icon-button>
+							Productspecificaties <a href="./data/Specificaties_3D-model_20171206.pdf" download><paper-icon-button icon="icons:info"></paper-icon-button></a>
+						</div>
+					</div>
+					
+				</paper-card>
+				<paper-card class='drawerblock'>
+					Stap 3
+					<div class="card-content">
+						<p>Selecteer km-vlakken in de kaart (muiskliks) <br>
+							of <a href="mailto:henk.de.kluijver@geodan.nl">mail</a> je onderzoeksgebied</p>
+						<!--
+						en/of</p>
+						upload studiegebied <paper-icon-button icon="icons:file-upload"></paper-icon-button>
+						<input label="upload" type="file" on-change="fileupload">
+						-->
+						</input>
+					</div>
+				</paper-card>
+
+				<paper-card class='drawerblock' >
+					Stap 4
+					<div class="card-content  layout flex">
+						Bestel
+						<paper-icon-button icon="icons:shopping-cart" on-click="openoffertedialog"></paper-icon-button>
+					</div>
+				</paper-card>
+				<paper-card class='drawerblock'>
+					<div class="card-content">
+							Download proefset
+							<paper-icon-button icon="icons:file-download"></paper-icon-button>
+					</div>
+				</paper-card>
+				<paper-card class='drawerblock'>
+					<div class="card-content">
+							Meer informatie….<br>
+							<a href="mailto:henk.de.kluijver@geodan.nl">henk.de.kluijver@geodan.nl</a> <br>
+							+31 (0)6 29076163
+					</div>
+				</paper-card>
+			</div>
 		</app-drawer>
 		<app-header-layout fullbleed>
-			<app-header slot="header" class="flex">
-				<app-toolbar class="medium-tall" justify='justified'>
-					<h1>3D model voor SRM2-geluidsstudies</h1>
+			<app-header>
+
+				<app-toolbar>
+						<h4 condensed-title>3D model voor SRM2-geluidsstudies</h4>
+						<paper-icon-button icon="info" on-click="openopeningdialog"></paper-icon-button>
 				</app-toolbar>
 			</app-header>
 			<div class="flex">
@@ -244,7 +206,7 @@
                 <mapbox-gl id="map"
                     interactive
                     map="{{map}}"
-                    script-src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js"
+                    script-src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js"
 					access-token="pk.eyJ1IjoidGlsdCIsImEiOiJjaXl5dnAydjYwMDAxMnFwYWR1Z2ZjMngwIn0.JYt8pUcgFf9QETgo5FzA0A"
 					map-style-url="mapbox://styles/mapbox/streets-v9"
 					latitude=52.255
@@ -253,10 +215,6 @@
                     pitch=45
                     bearing=0></mapbox-gl>
 			</div>
-			<footer>
-					&copy; Geodan
-			</footer>
-		
 	</app-header-layout>
 	
 </app-drawer-layout>
@@ -299,10 +257,6 @@ class VerkoopApp extends Polymer.Element {
                 observer: '_calcTotaal'
 
             },
-			tabselected: {
-				type: Number,
-				value: 0
-			},
 			selectedLayers: {
 				type: Array
 				//observer: '_selectedLayersChanged'
@@ -493,26 +447,7 @@ class VerkoopApp extends Polymer.Element {
                         [27.1, 'rgb(214,24,97)'],
 						[100, 'rgb(214,24,97)']
                         ]
-                    },/*
-					'fill-extrusion-color': {
-                        "property": "relhoogte",
-                        "stops": [
-                        [0, 'hsl(203,73%,67%)'],
-                        [1, 'hsl(187,56%,69%)'],
-                        [2, 'hsl(161,47%,76%)'],
-                        [3, 'hsl(113,26%,87%)'],
-                        [4, 'hsl(170,38%,49%)'],
-                        [5, 'hsl(44,45%,49%)'],
-                        [7, 'hsl(36,53%,49%)'],
-                        [9, 'hsl(30,62%,49%)'],
-                        [11, 'hsl(14,73%,49%)'],
-                        [13, 'hsl(353,71%,84%)'],
-                        [15, 'hsl(335,99%,62%)'],
-                        [20, 'hsl(356,99%,50%)'],
-                        [30, 'hsl(356,99%,27%)'],
-                        [40, 'hsl(356,100%,13%)']
-                        ]
-                    },*/
+                    },
                     'fill-extrusion-height': {
                         'property': 'relhoogte',
                         'type': 'identity'
@@ -528,7 +463,7 @@ class VerkoopApp extends Polymer.Element {
 				closeButton: false,
 				closeOnClick: false
 			});
-
+			
 			map.on('mouseenter', 'building-extrusion', function(e) {
 				// Change the cursor style as a UI indicator.
 				map.getCanvas().style.cursor = 'pointer';
@@ -544,7 +479,7 @@ class VerkoopApp extends Polymer.Element {
 				map.getCanvas().style.cursor = '';
 				popup.remove();
 			});
-
+			
            
             
 
@@ -584,6 +519,7 @@ class VerkoopApp extends Polymer.Element {
 	}
 	ready(){
 		super.ready();
+		this.$.openingdialog.open();
 		this.layers.forEach(function(l,i){
 			
 		});
@@ -593,6 +529,9 @@ class VerkoopApp extends Polymer.Element {
 	}
 	openoffertedialog(){
 		this.$.offertedialog.open();
+	}
+	openopeningdialog(){
+		this.$.openingdialog.open();
 	}
 }
 window.customElements.define(VerkoopApp.is, VerkoopApp);

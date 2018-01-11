@@ -1,0 +1,100 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id="opening-dialog">
+
+<template>
+<style include="iron-flex iron-flex-alignment"></style>
+<style include="geodan-style">
+    #dialog {
+        width: 50%;
+    }
+</style>
+<paper-dialog id='dialog' opened='true'>
+  <h2>3Ddatalab.nl 3D-modellen voor SRM2-geluidsstudies</h2>
+  <paper-dialog-scrollable>
+    
+    <h3>3D-modellen voor geluidsstudies</h3>
+    <div class="layout horizontal">
+        <div>
+            <p>
+            Via deze website kan je 3D-omgevingsmodellen voor
+            geluidsstudies bestellen.
+            
+            </p>
+            <p>De modellering is conform de wettelijke eisen voor SRM2-
+            geluidsstudies:
+            </p>
+            <ul>
+            <li>3D-gebouwen: Blokken op nokhoogte, waarbij een gebouw is
+            gesplitst op relevante interne hoogteverschillen. De panden
+            zijn voorzien van adres- en functie-informatie.
+            <li>3D-hoogtelijnen: breaklines (schouder en teen van een talud).
+            <li>2D-bodemgebieden: verharding en water met B=0
+            </ul>
+            <p>
+            De bestanden zijn direct geschikt voor import in GeoMilieu en
+            WinHavik.
+            </p>
+        </div>
+        <div><img src="../img/opening01.jpg"/></div>
+    </div>
+
+    <h3>Actuele en betrouwbare gegevens</h3>
+    <div class="layout horizontal">
+        <div>
+            <p>De 3D-modellen zijn opgebouwd op basis van digitale gegevens
+            van de rijksoverheid (BAG, BGT en AHN). Gebruik van authentieke
+            gegevensbronnen van het rijk, die met een geautomatiseerd
+            conversie-proces zijn omgezet in 3D-modellen (geen handwerk)
+            leidt tot betrouwbare en eenduidige geluidsmodellen, die direct
+            herleidbaar zijn naar de basisgegevens.
+            </p>
+        </div>
+        <div><img src="../img/opening02.jpg"/></div>
+    </div>
+
+    <h3>Klik en bestel direct via deze site</h3>
+    <div class="layout horizontal">
+        <div>
+        
+            <p>
+            Bestellen kan eenvoudig direct via deze website. Klik in de kaart de km2-vakken van je studiegebied
+            aan en vul daarna je gegevens in bij de bestelknop. Je ontvangt dan een mail en na jouw verificatie
+            op deze mail wordt de order in gang gezet.
+            </p>
+        </div>
+        <div><img src="../img/opening03.jpg"/></div>
+    </div>
+
+    <h3>Stuur een mail voor een groter studiegebied</h3>
+    <p>
+    Heb je een groot studiegebied? Stuur de shape dan aan <a href="mailto://h.kluijver@upcmail.nl">h.kluijver@upcmail.nl</a>. Je ontvangt een mail
+    met prijsopgaaf. Na je akkoord wordt de order in gang gezet.
+    </p>
+        
+  </paper-dialog-scrollable>
+  <div class="buttons">
+    <paper-button dialog-dismiss>Verder</paper-button>
+  </div>
+</paper-dialog>
+</template>
+ <!--</dom-module>-->
+
+<script>
+class OpeningDialog extends Polymer.Element {
+	static get is() { return 'opening-dialog'; }
+	static get properties() {
+        return {
+        }
+    }
+    open(){
+        this.$.dialog.open();
+    }
+}
+window.customElements.define(OpeningDialog.is, OpeningDialog);
+</script>
+</dom-module>
