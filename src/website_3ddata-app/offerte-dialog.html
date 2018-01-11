@@ -56,9 +56,9 @@
                 
                 <b>[[hokken]]</b> km&sup2; geselecteerd voor:<br>
             
-                <paper-checkbox name="gebouwen" disabled checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
-                <paper-checkbox name="hoogtelijnen" disabled checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
-                <paper-checkbox name="bodemgebieden" disabled checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
+                <paper-checkbox name="gebouwen" enabled checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
+                <paper-checkbox name="hoogtelijnen" enabled checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
+                <paper-checkbox name="bodemgebieden" enabled checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
 
                 Totaalprijs: 
 
@@ -155,7 +155,7 @@ class OfferteDialog extends Polymer.Element {
         event.preventDefault();           // we are submitting via xhr below
         var request = event.target.request; 
         // add form-specific values into the data
-        request.body.formDataNameOrder = JSON.stringify(["name","organisation","street","number","postcode","city","phone","email"]);
+        request.body.formDataNameOrder = JSON.stringify(["name","organisation","street","number","postcode","city","phone","email","strippenkaart","gebouwen","hoogtelijnen","bodemgebieden","hokken"]);
         request.body.formGoogleSheetName = "responses"; // default sheet name
         request.body.formGoogleSendEmail = ""; // no email by default
 
