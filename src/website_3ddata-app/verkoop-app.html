@@ -44,17 +44,35 @@
 <style include="iron-flex iron-flex-alignment"></style>
 <style include="geodan-style">
 	:host {
-        display: block;
-    }
-
+		display: block;
+		color: var(--geodan-color);
+	}
+	
+	h1 {
+		font-family: var(--geodan-regular-font);
+		font-size: var(--geodan-heading1-fontsize);
+	}
+	h2 {
+		font-family: var(--geodan-regular-font);
+		font-size: var(--geodan-heading2-fontsize);
+	}
+	h3 {
+		font-family: var(--geodan-regular-font);
+		font-size: var(--geodan-heading3-fontsize);
+	}
 	paper-button.geodan {
 		background:var(--geodan-button-normal);
-  		color:white;
-		--paper-button-ink-color: var(--geodan-button-pressed);
+		color:white;
+		border-radius:var(--geodan-button-corner-radius); 
+		--paper-button-ink-color: var(--geodan-button-normal);
 		--paper-button-disabled: var(--geodan-button-disabled);
 	}
 	paper-button.geodan:hover {
 		background:var(--geodan-button-hover);
+	}
+
+	paper-button.geodan a{
+		color: white;
 	}
 	
 	a {
@@ -92,27 +110,22 @@
 	}
 	#notes {
       @apply --layout-vertical;
-      height: 344px;
+	  height: 100%;
+	  overflow: auto;
     }
-	paper-card {
+	.step {
 		flex: 0 0 auto;
-		padding: 1px;
-	}
-	.drawerblock {
-		border-style: solid;
-		border-width: 2px;
-		border-color: var(--geodan-button-normal);
+		border-bottom-style: solid;
+		border-bottom-width: 2px;
+		border-bottom-color: var(--geodan-button-normal);
 		padding: 5px;
 		margin: 5px;
 	}
-	
-	drawerblock > paper-card {
-      box-sizing: border-box;
-      max-width: 184px;
-      margin: 3px;
-      flex: 0 0 auto;
-    }
 
+	.step paper-button {
+		width: 100%;
+	}
+	
     mapbox-gl {
         height: 100%;
     }
@@ -125,72 +138,65 @@
 		<app-drawer slot="drawer" id='menu' >
 		
 			<app-toolbar class="medium-tall">
+				<img src="./img/Geodan_logo_rgb.png" height="80px"/>
 			</app-toolbar>
-			<div id="notes" style="height: 100%; overflow: auto;">
-				<paper-card class='drawerblock'>
-						Stap 1
-						<div class="card-content">
+			<div id="notes">
+				
+				<div class="step">
 					<gm-geosearch 
 					servicekey="2021faff-cc40-11e6-a549-52540031712c"
 					on-goto-coords="zoomTo"
 					></gm-geosearch>
-					</div>
-				</paper-card>
+				</div>
 				
-				<paper-card class='drawerblock'>
-					Stap 2
-					<div class="card-content">
-
-						<h4>Gewenste bestanden</h4>
-						<paper-checkbox checked={{_panden}}>Gebouwen</paper-checkbox>
-						<paper-checkbox checked={{_breeklijnen}}>Hoogtelijnen</paper-checkbox>
+				<div class="step">
+					<b>Gewenste bestanden</b>
+					<p>
+						<paper-checkbox checked={{_panden}}>Gebouwen</paper-checkbox><br/>
+						<paper-checkbox checked={{_breeklijnen}}>Hoogtelijnen</paper-checkbox><br/>
 						<paper-checkbox checked={{_hardzacht}}>Bodemvlakken</paper-checkbox>
-						<hr>
-						Geselecteerd: <span>[[_hokken]]</span> km&sup2;<br>
-						Totaal: &euro; <span>[[_totaal]]</span>,-
-					</div>
-					<div class="card-actions">
-						<div class="horizontal justified">
-							Prijs per km&sup2; <paper-icon-button icon="icons:info" on-click="openpricingdialog"></paper-icon-button>
-							Productspecificaties <a href="./data/Specificaties_3D-model_20171206.pdf" download><paper-icon-button icon="icons:info"></paper-icon-button></a>
+					</p>
+				</div>
+				
+				<div class="step">
+					<b>Kies je gebied</b>
+					<p>Klik km-vlakken in de kaart<br>
+						of <a href="mailto:henk.de.kluijver@geodan.nl">mail</a> je onderzoeksgebied</p>
+					<!--
+					en/of</p>
+					upload studiegebied <paper-icon-button icon="icons:file-upload"></paper-icon-button>
+					<input label="upload" type="file" on-change="fileupload">
+					-->
+					</input>
+				</div>
+				
+				<div class="step">
+					<b>Bestel</b>
+					<p class"horizontal justified">
+						<div>
+							Geselecteerd: <span>[[_hokken]]</span> km&sup2;<br/>
+							Totaal: &euro; <span>[[_totaal]]</span>,-
 						</div>
-					</div>
+						<div class="flex"><iron-icon icon="shopping-cart" on-click="openoffertedialog"></iron-icon></div>
+					</p>
 					
-				</paper-card>
-				<paper-card class='drawerblock'>
-					Stap 3
-					<div class="card-content">
-						<p>Selecteer km-vlakken in de kaart (muiskliks) <br>
-							of <a href="mailto:henk.de.kluijver@geodan.nl">mail</a> je onderzoeksgebied</p>
-						<!--
-						en/of</p>
-						upload studiegebied <paper-icon-button icon="icons:file-upload"></paper-icon-button>
-						<input label="upload" type="file" on-change="fileupload">
-						-->
-						</input>
+				</div>
+				
+				<div class="step">
+					<b>Informatie</b><br>
+					<div class="horizontal justified">
+						<paper-icon-button icon="info" on-click="openopeningdialog"></paper-icon-button> <br>
+						<iron-icon icon="info" on-click="openpricingdialog"></iron-icon>Prijs per km&sup2; <br>
+						<a href="./data/Specificaties_3D-model_20171206.pdf" download><iron-icon icon="info"></iron-icon>Productspecificaties</a> <small>(pdf)</small><br>
+						<a href="" download><iron-icon icon="file-download"></iron-icon>Download proefset</a> <small>(zip)</small>
 					</div>
-				</paper-card>
-
-				<paper-card class='drawerblock' >
-					Stap 4
-					<div class="card-content  layout flex">
-						Bestel
-						<paper-icon-button icon="icons:shopping-cart" on-click="openoffertedialog"></paper-icon-button>
-					</div>
-				</paper-card>
-				<paper-card class='drawerblock'>
-					<div class="card-content">
-							Download proefset
-							<paper-icon-button icon="icons:file-download"></paper-icon-button>
-					</div>
-				</paper-card>
-				<paper-card class='drawerblock'>
-					<div class="card-content">
-							Meer informatie….<br>
-							<a href="mailto:henk.de.kluijver@geodan.nl">henk.de.kluijver@geodan.nl</a> <br>
-							+31 (0)6 29076163
-					</div>
-				</paper-card>
+				</div>
+				
+				<div class="step">
+						<h4>Nog meer informatie….</h4>
+						<a href="mailto:henk.de.kluijver@geodan.nl">henk.de.kluijver@geodan.nl</a> <br>
+						+31 (0)6 29076163
+				</div>
 			</div>
 		</app-drawer>
 		<app-header-layout fullbleed>
@@ -198,7 +204,7 @@
 
 				<app-toolbar>
 						<h4 condensed-title>3D model voor SRM2-geluidsstudies</h4>
-						<paper-icon-button icon="info" on-click="openopeningdialog"></paper-icon-button>
+						
 				</app-toolbar>
 			</app-header>
 			<div class="flex">
@@ -211,7 +217,7 @@
 					map-style-url="mapbox://styles/mapbox/streets-v9"
 					latitude=52.255
                     longitude=4.555
-                    zoom=17
+                    zoom=13
                     pitch=45
                     bearing=0></mapbox-gl>
 			</div>
@@ -362,7 +368,7 @@ class VerkoopApp extends Polymer.Element {
 			window.map = map;
             map.addSource('kmhokken', {
                 type: 'vector',
-                tiles:["http://metis:3011/mvt/km_hokken/{z}/{x}/{y}.mvt"],
+                tiles:["http://saturnus.geodan.nl/mvt_mimas/km_hokken/{z}/{x}/{y}.mvt"],
                 minzoom: 9,
                 maxzoom: 20
                 //data: "./data/km_hokken.geojson"
@@ -381,7 +387,7 @@ class VerkoopApp extends Polymer.Element {
 
 			map.addSource("odwh_bodemvlakken", {
                 type: 'vector',
-                tiles:["http://metis:3011/mvt/odwh_bodemvlakken/{z}/{x}/{y}.mvt"],
+                tiles:["http://saturnus.geodan.nl/mvt_mimas/odwh_bodemvlakken/{z}/{x}/{y}.mvt"],
                 minzoom: 13,
                 maxzoom: 18
             });
@@ -418,17 +424,17 @@ class VerkoopApp extends Polymer.Element {
                 "filter": ["in", "uid", ""]
             }); 
 
-            map.addSource("odwh", {
+            map.addSource("odwh_panden", {
                 type: 'vector',
-                tiles:["http://metis:3011/mvt/odwh/{z}/{x}/{y}.mvt"],
+                tiles:["http://saturnus.geodan.nl/mvt_mimas/odwh_panden/{z}/{x}/{y}.mvt"],
                 minzoom: 13,
                 maxzoom: 18
             });
             map.addLayer({
                 'id': 'building-extrusion',
                 'type': 'fill-extrusion',
-                'source': 'odwh',
-                "source-layer": "odwh",
+                'source': 'odwh_panden',
+                "source-layer": "odwh_panden",
 
                 'paint': {
 					
