@@ -100,6 +100,7 @@
 		color: white;
 	}
 	paper-icon-button {
+		color: var(--geodan-button-normal);
 		--paper-icon-button-ink-color: var(--geodan-button-normal);
 	}
 
@@ -397,12 +398,11 @@ class VerkoopApp extends Polymer.Element {
         unitprice += hardzacht==true?5:0;
         this._hokken = this.selectedHokken.length;
         this._totaal = this.selectedHokken.length * unitprice;
-		if (this._hokken > 0){
-			this.$.offerbutton.disabled = false;
-			this.$.offerbutton.getRipple();
+		if (this._totaal > 0){
+			this.offerbuttonvisible = true;
 		}
 		else {
-			this.$.offerbutton.disabled = true;
+			this.offerbuttonvisible = false;
 		}
 		
     }
