@@ -12,6 +12,16 @@
     #dialog {
         width: 50%;
     }
+    paper-button.geodan {
+		background:var(--geodan-button-normal);
+		color:white;
+		border-radius:var(--geodan-button-corner-radius); 
+		--paper-button-ink-color: var(--geodan-button-normal);
+		--paper-button-disabled: var(--geodan-button-disabled);
+	}
+	paper-button.geodan:hover {
+		background:var(--geodan-button-hover);
+	}
 </style>
 <paper-dialog id='dialog' opened='true'>
   <h2>3Ddatalab.nl 3D-modellen voor SRM2-geluidsstudies</h2>
@@ -72,13 +82,13 @@
 
     <h3>Stuur een mail voor een groter studiegebied</h3>
     <p>
-    Heb je een groot studiegebied? Stuur de shape dan aan <a href="mailto://h.kluijver@upcmail.nl">h.kluijver@upcmail.nl</a>. Je ontvangt een mail
+    Heb je een groot studiegebied? Stuur de shape dan aan <a href="mailto://henk.de.kluijver@geodan.nl">h.kluijver@upcmail.nl</a>. Je ontvangt een mail
     met prijsopgaaf. Na je akkoord wordt de order in gang gezet.
     </p>
         
   </paper-dialog-scrollable>
   <div class="buttons">
-    <paper-button dialog-dismiss>Verder</paper-button>
+    <paper-button class="geodan" dialog-dismiss>Verder</paper-button>
   </div>
 </paper-dialog>
 </template>

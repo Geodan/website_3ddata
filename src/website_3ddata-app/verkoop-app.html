@@ -41,8 +41,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
 <dom-module id="verkoop-app">
 <template>
+
 <style include="iron-flex iron-flex-alignment"></style>
-<style include="geodan-style">
+<style is="custom-style" include="geodan-style">
 	:host {
 		display: block;
 		color: var(--geodan-color);
@@ -60,6 +61,11 @@
 		font-family: var(--geodan-regular-font);
 		font-size: var(--geodan-heading3-fontsize);
 	}
+
+	.title {
+		font-family: var(--geodan-regular-font);
+		font-size: var(--geodan-heading1-fontsize);
+	}
 	paper-button.geodan {
 		background:var(--geodan-button-normal);
 		color:white;
@@ -74,9 +80,13 @@
 	paper-button.geodan a{
 		color: white;
 	}
-	
+	paper-icon-button {
+		--paper-icon-button-ink-color: var(--geodan-button-normal);
+	}
+
 	a {
 		text-decoration: none;
+		color: var(--geodan-color);
 	}
 
 	app-header {
@@ -110,11 +120,11 @@
 	}
 	#notes {
       @apply --layout-vertical;
-	  height: 100%;
+	  height: 90%;
 	  overflow: auto;
     }
 	.step {
-		flex: 0 0 auto;
+		/*flex: 0 0 auto;*/
 		border-bottom-style: solid;
 		border-bottom-width: 2px;
 		border-bottom-color: var(--geodan-button-normal);
@@ -138,11 +148,11 @@
 		<app-drawer slot="drawer" id='menu' >
 		
 			<app-toolbar class="medium-tall">
-				<img src="./img/Geodan_logo_rgb.png" height="80px"/>
 			</app-toolbar>
 			<div id="notes">
 				
 				<div class="step">
+						
 					<gm-geosearch 
 					servicekey="2021faff-cc40-11e6-a549-52540031712c"
 					on-goto-coords="zoomTo"
@@ -162,6 +172,9 @@
 					<b>Kies je gebied</b>
 					<p>Klik km-vlakken in de kaart<br>
 						of <a href="mailto:henk.de.kluijver@geodan.nl">mail</a> je onderzoeksgebied</p>
+					<paper-button on-click="deselectAll" style="cursor: pointer">
+						<iron-icon icon="tab-unselected"></iron-icon>&nbsp; alles deselecteren
+					</paper-button>
 					<!--
 					en/of</p>
 					upload studiegebied <paper-icon-button icon="icons:file-upload"></paper-icon-button>
@@ -172,29 +185,29 @@
 				
 				<div class="step">
 					<b>Bestel</b>
-					<p class"horizontal justified">
+					<div class="horizontal layout justified">
 						<div>
 							Geselecteerd: <span>[[_hokken]]</span> km&sup2;<br/>
 							Totaal: &euro; <span>[[_totaal]]</span>,-
 						</div>
-						<div class="flex"><iron-icon icon="shopping-cart" on-click="openoffertedialog"></iron-icon></div>
+						<div class="flex"></div>
+						<paper-icon-button id="offerbutton" icon="shopping-cart" on-click="openoffertedialog"></paper-icon-button>
+					</div>
+					<p>
+					<small>NB: prijs per km daalt bij grote afname<br/>
+					10% korting bij afname van alle drie de typen bestanden</small>
 					</p>
-					
 				</div>
-				
+				<div class="step flex"></div>
 				<div class="step">
 					<b>Informatie</b><br>
 					<div class="horizontal justified">
-						<paper-icon-button icon="info" on-click="openopeningdialog"></paper-icon-button> <br>
-						<iron-icon icon="info" on-click="openpricingdialog"></iron-icon>Prijs per km&sup2; <br>
+						<div on-click="openopeningdialog" style="cursor: pointer"><iron-icon icon="info"></iron-icon>Over</div>
+						<div on-click="openpricingdialog" style="cursor: pointer"><iron-icon icon="info" ></iron-icon>Prijs per km&sup2;</div>
 						<a href="./data/Specificaties_3D-model_20171206.pdf" download><iron-icon icon="info"></iron-icon>Productspecificaties</a> <small>(pdf)</small><br>
 						<a href="" download><iron-icon icon="file-download"></iron-icon>Download proefset</a> <small>(zip)</small>
 					</div>
-				</div>
-				
-				<div class="step">
-						<h4>Nog meer informatie….</h4>
-						<a href="mailto:henk.de.kluijver@geodan.nl">henk.de.kluijver@geodan.nl</a> <br>
+					<a href="mailto:henk.de.kluijver@geodan.nl">henk.de.kluijver@geodan.nl</a> <br>
 						+31 (0)6 29076163
 				</div>
 			</div>
@@ -204,7 +217,9 @@
 
 				<app-toolbar>
 						<h4 condensed-title>3D model voor SRM2-geluidsstudies</h4>
-						
+						<a href="https:\\www.geodan.nl"><img src="./img/Geodan_logo_rgb.png" height="80px"/></a>
+						<h2>&amp; &nbsp;</h2>
+						<a href=""><img src="./img/4DWaveLab_logo.png" height="80px"/></a>
 				</app-toolbar>
 			</app-header>
 			<div class="flex">
@@ -263,6 +278,10 @@ class VerkoopApp extends Polymer.Element {
                 observer: '_calcTotaal'
 
             },
+			offerdisabled: {
+				type: Boolean,
+				value: true,
+			},
 			selectedLayers: {
 				type: Array
 				//observer: '_selectedLayersChanged'
@@ -359,6 +378,14 @@ class VerkoopApp extends Polymer.Element {
         unitprice += hardzacht==true?5:0;
         this._hokken = this.selectedHokken.length;
         this._totaal = this.selectedHokken.length * unitprice;
+		if (this._hokken > 0){
+			this.$.offerbutton.disabled = false;
+			this.$.offerbutton.getRipple();
+		}
+		else {
+			this.$.offerbutton.disabled = true;
+		}
+		
     }
 
 	_mapChanged(){
@@ -515,6 +542,12 @@ class VerkoopApp extends Polymer.Element {
             self.layers = map.layers;
         });
     }
+	deselectAll(){
+		this.selectedHokken = [];
+		var filter = ['in', 'uid'];
+		filter = filter.concat(this.selectedHokken);
+		map.setFilter("kmhokken-highlighted", filter);
+	}
 	zoomTo(coords){
 		this.map.flyTo({
 			center: [
