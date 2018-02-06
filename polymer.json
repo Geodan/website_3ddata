@@ -1,7 +1,29 @@
 {
+  "entrypoint": "index.html",
+  "shell": "src/website_3ddata-app/verkoop-app.html",
+  "fragments": [
+    "src/website_3ddata-app/offerte-dialog.html",
+    "src/website_3ddata-app/opening-dialog.html",
+    "src/website_3ddata-app/pricing-dialog.html"
+  ],
+  "sources": [
+    "src/**/*",
+    "data/**/*",
+    "img/**/*"
+  ],
   "lint": {
-    "rules": [
-      "polymer-2"
-    ]
-  }
+    "rules": 
+      ["polymer-2-hybrid"]
+  },
+  "builds": [
+    {
+      "preset": "es5-bundled"
+    },
+    {
+      "preset": "es6-unbundled"
+    },
+    {
+      "preset": "es6-bundled"
+    }
+  ]
 }

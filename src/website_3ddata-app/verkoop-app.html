@@ -34,18 +34,37 @@
 <link rel="import" href="opening-dialog.html">
 <link rel="import" href="pricing-dialog.html">
 <link rel="import" href="offerte-dialog.html">
-<!-- import CSS mixin shim -->
-<link rel="import" href="geodan-style.html">
+
 <script src="https://unpkg.com/shapefile@0.6"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.3/turf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
+
 <dom-module id="verkoop-app">
 <template>
 
 <style include="iron-flex iron-flex-alignment"></style>
-<style is="custom-style" include="geodan-style">
+<style is="custom-style">
 	:host {
 		display: block;
+		--geodan-regular-font: 'Open Sans Regular';
+		--geodan-light-font: 'Open Sans',sans-serif;
+		--geodan-heading1-fontsize: 36px;
+		--geodan-heading2-fontsize: 24px;
+		--geodan-heading3-fontsize: 17px;
+		--geodan-light-fontweight: 300;
+		--geodan-color: #333333;
+
+		--geodan-button-normal: #ED3031;
+		--geodan-button-hover:  #D60000;
+		--geodan-button-pressed: #BB0C16;
+		--geodan-button-disabled: #ECECEC;
+		--geodan-button-corner-radius: 4px;
+
+		--geodan-checkbox-unckeched: #E3E2E3;
+		--geodan-checkbox-checked: #ED3031;
+
+		--geodan-header-background:  #424242;
+		
 		color: var(--geodan-color);
 	}
 	
