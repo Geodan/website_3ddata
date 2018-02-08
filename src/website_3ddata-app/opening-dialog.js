@@ -1,12 +1,23 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+import {LitElement} from '../../node_modules/@polymer/lit-element/lit-element.js'
+import { html } from '../../node_modules/lit-html/lib/lit-extended.js';
+import { Element } from '../../node_modules/@polymer/polymer/polymer-element.js';
+import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
+import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 
-<dom-module id="opening-dialog">
 
-<template>
+class OpeningDialog extends LitElement {
+	static get is() { return 'opening-dialog'; }
+	static get properties() {
+        return {
+        }
+    }
+    open(){
+        this.$.dialog.open();
+    }
+    render(){
+        html`
 <style include="iron-flex iron-flex-alignment"></style>
 <style>
     #dialog {
@@ -91,20 +102,8 @@
     <paper-button class="geodan" dialog-dismiss>Verder</paper-button>
   </div>
 </paper-dialog>
-</template>
- <!--</dom-module>-->
+`;
+}
 
-<script>
-class OpeningDialog extends Polymer.Element {
-	static get is() { return 'opening-dialog'; }
-	static get properties() {
-        return {
-        }
-    }
-    open(){
-        this.$.dialog.open();
-    }
 }
 window.customElements.define(OpeningDialog.is, OpeningDialog);
-</script>
-</dom-module>

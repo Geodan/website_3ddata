@@ -1,0 +1,39 @@
+{
+  "name": "3ddatalab",
+  "version": "1.0.0",
+  "description": "Website voor 3ddatalab",
+  "main": "index.js",
+  "repository": "https://github.com/Geodan/website_3ddata.git",
+  "author": "Tom van Tilburg <tom.van.tilburg@gmail.com>",
+  "license": "MIT",
+  "flat": true,
+  "dependencies": {
+    "@polymer/app-layout": "^3.0.0-pre.7",
+    "@polymer/app-route": "^3.0.0-pre.7",
+    "@polymer/app-storage": "^3.0.0-pre.7",
+    "@polymer/iron-flex-layout": "^3.0.0-pre.7",
+    "@polymer/iron-form": "^3.0.0-pre.7",
+    "@polymer/iron-icon": "^3.0.0-pre.7",
+    "@polymer/iron-icons": "^3.0.0-pre.7",
+    "@polymer/iron-iconset-svg": "^3.0.0-pre.7",
+    "@polymer/iron-media-query": "^3.0.0-pre.7",
+    "@polymer/iron-overlay-behavior": "^3.0.0-pre.7",
+    "@polymer/iron-pages": "^3.0.0-pre.7",
+    "@polymer/iron-selector": "^3.0.0-pre.7",
+    "@polymer/lit-element": "^0.1.0",
+    "@polymer/paper-button": "^3.0.0-pre.7",
+    "@polymer/paper-card": "^3.0.0-pre.7",
+    "@polymer/paper-dialog": "^3.0.0-pre.7",
+    "@polymer/paper-dialog-scrollable": "^3.0.0-pre.7",
+    "@polymer/paper-icon-button": "^3.0.0-pre.7",
+    "@polymer/paper-input": "^3.0.0-pre.7",
+    "@polymer/paper-listbox": "^3.0.0-pre.7",
+    "@polymer/paper-spinner": "^3.0.0-pre.7",
+    "@polymer/paper-tabs": "^3.0.0-pre.7",
+    "@polymer/polymer": "^3.0.0-pre.7",
+    "lit-html": "^0.9.0"
+  },
+  "resolutions": {
+    "lit-html": "0.9.0"
+  }
+}
