@@ -71,6 +71,13 @@
     "@polymer/iron-validatable-behavior" "^3.0.0-pre.7"
     "@polymer/polymer" "^3.0.0-pre.7"
 
+"@polymer/iron-collapse@^3.0.0-pre.7":
+  version "3.0.0-pre.8"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-collapse/-/iron-collapse-3.0.0-pre.8.tgz#e624ec0a7a881206f62d38ca38131b3ee0f64f71"
+  dependencies:
+    "@polymer/iron-resizable-behavior" "^3.0.0-pre.7"
+    "@polymer/polymer" "^3.0.0-pre.7"
+
 "@polymer/iron-fit-behavior@^3.0.0-pre.7":
   version "3.0.0-pre.8"
   resolved "https://registry.yarnpkg.com/@polymer/iron-fit-behavior/-/iron-fit-behavior-3.0.0-pre.8.tgz#789e252acde3fae08b0fd33d7ef763de96497cd3"
@@ -244,6 +251,17 @@
     "@polymer/paper-styles" "^3.0.0-pre.7"
     "@polymer/polymer" "^3.0.0-pre.7"
 
+"@polymer/paper-checkbox@^3.0.0-pre.7":
+  version "3.0.0-pre.8"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-checkbox/-/paper-checkbox-3.0.0-pre.8.tgz#79f6106304bf322fc677467c54163cf6d9b041be"
+  dependencies:
+    "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.7"
+    "@polymer/iron-checked-element-behavior" "^3.0.0-pre.7"
+    "@polymer/paper-behaviors" "^3.0.0-pre.7"
+    "@polymer/paper-ripple" "^3.0.0-pre.7"
+    "@polymer/paper-styles" "^3.0.0-pre.7"
+    "@polymer/polymer" "^3.0.0-pre.7"
+
 "@polymer/paper-dialog-behavior@^3.0.0-pre.7":
   version "3.0.0-pre.8"
   resolved "https://registry.yarnpkg.com/@polymer/paper-dialog-behavior/-/paper-dialog-behavior-3.0.0-pre.8.tgz#d1dbad0ec121de033ffd2185603d14241fc18491"
@@ -291,6 +309,15 @@
     "@polymer/paper-styles" "^3.0.0-pre.7"
     "@polymer/polymer" "^3.0.0-pre.7"
 
+"@polymer/paper-item@^3.0.0-pre.7":
+  version "3.0.0-pre.8"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-item/-/paper-item-3.0.0-pre.8.tgz#42e494bf8f8ffbc1eb77422e8560d397b9262ee8"
+  dependencies:
+    "@polymer/iron-behaviors" "^3.0.0-pre.7"
+    "@polymer/iron-flex-layout" "^3.0.0-pre.7"
+    "@polymer/paper-styles" "^3.0.0-pre.7"
+    "@polymer/polymer" "^3.0.0-pre.7"
+
 "@polymer/paper-listbox@^3.0.0-pre.7":
   version "3.0.0-pre.8"
   resolved "https://registry.yarnpkg.com/@polymer/paper-listbox/-/paper-listbox-3.0.0-pre.8.tgz#6abc9670dab7f46624cd09f61f285f0d7ccc61cb"
@@ -334,6 +361,15 @@
     "@polymer/iron-resizable-behavior" "^3.0.0-pre.7"
     "@polymer/paper-behaviors" "^3.0.0-pre.7"
     "@polymer/paper-icon-button" "^3.0.0-pre.7"
+    "@polymer/paper-styles" "^3.0.0-pre.7"
+    "@polymer/polymer" "^3.0.0-pre.7"
+
+"@polymer/paper-toggle-button@^3.0.0-pre.7":
+  version "3.0.0-pre.8"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-toggle-button/-/paper-toggle-button-3.0.0-pre.8.tgz#257c063fa119a8b03d1fb7af172fc16c47d0037f"
+  dependencies:
+    "@polymer/iron-checked-element-behavior" "^3.0.0-pre.7"
+    "@polymer/paper-behaviors" "^3.0.0-pre.7"
     "@polymer/paper-styles" "^3.0.0-pre.7"
     "@polymer/polymer" "^3.0.0-pre.7"
 

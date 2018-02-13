@@ -1,6 +1,7 @@
 import {LitElement} from '../../node_modules/@polymer/lit-element/lit-element.js'
 import { html } from '../../node_modules/lit-html/lib/lit-extended.js';
 import { Element } from '../../node_modules/@polymer/polymer/polymer-element.js';
+import { IronOverlayBehaviorImpl } from '../../node_modules/@polymer/iron-overlay-behavior/iron-overlay-behavior.js';
 import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
 import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import '../../node_modules/@polymer/paper-button/paper-button.js';
@@ -9,17 +10,17 @@ import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js
 
 class OpeningDialog extends LitElement {
 	static get is() { return 'opening-dialog'; }
-	static get properties() {
-        return {
-        }
-    }
     open(){
         this.$.dialog.open();
     }
+    //static get template() {
+    //   return `
     render(){
-        html`
+        return html`
+    
 <style include="iron-flex iron-flex-alignment"></style>
 <style>
+ 
     #dialog {
         width: 50%;
     }
@@ -34,7 +35,7 @@ class OpeningDialog extends LitElement {
 		background:var(--geodan-button-hover);
 	}
 </style>
-<paper-dialog id='dialog' opened='true'>
+  <paper-dialog id='dialog' opened='true'>
   <h2>3Ddatalab.nl 3D-modellen voor SRM2-geluidsstudies</h2>
   <paper-dialog-scrollable>
     

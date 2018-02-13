@@ -11,6 +11,11 @@ import { scroll } from '../../node_modules/@polymer/app-layout/helpers/helpers.j
 import '../../node_modules/@polymer/app-route/app-location.js';
 import '../../node_modules/@polymer/app-route/app-route.js';
 import '../../node_modules/@polymer/paper-input/paper-input.js';
+import '../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
+import '../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
+import '../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 import '../../node_modules/@polymer/paper-tabs/paper-tabs.js';
 import '../../node_modules/@polymer/paper-tabs/paper-tab.js';
 import '../../node_modules/@polymer/paper-listbox/paper-listbox.js';
@@ -26,35 +31,18 @@ import { afterNextRender } from '../../node_modules/@polymer/polymer/lib/utils/r
 import { timeOut } from '../../node_modules/@polymer/polymer/lib/utils/async.js';
 import { Debouncer } from '../../node_modules/@polymer/polymer/lib/utils/debounce.js';
 
-import "https://unpkg.com/shapefile@0.6";
-import "https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.3/turf.min.js";
-import "https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js";
+//import "https://unpkg.com/shapefile@0.6";
+//import "https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.3/turf.min.js";
+//import "https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js";
 
+//import './mb-map.js';
 import './opening-dialog.js';
-import './offerte-dialog.js';
-import './pricing-dialog.js';
+//import './offerte-dialog.js';
+//import './pricing-dialog.js';
 import './gm-search.js';
 
 /*
-
-
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
-<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
-<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
-<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
-
 <link rel="import" href="../../bower_components/mapbox-gl/mapbox-gl.html">
-
-<script src="https://unpkg.com/shapefile@0.6"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.3/turf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
 */
 
 class VerkoopApp extends LitElement {
@@ -62,20 +50,11 @@ class VerkoopApp extends LitElement {
 	// Public property API that triggers re-render (synched with attributes)
 	static get properties() {
 		return {
-			_panden: {
-				type: Boolean,
-				value: true
-			},
-			_breeklijnen: {
-				type: Boolean,
-				value: true
-			},
-			_hardzacht: {
-				type: Boolean,
-				value: true
-			},
-			_hokken: {value: 0},
-			_totaal: {value: 0},
+			_panden:  Boolean,
+			_breeklijnen: Boolean,
+			_hardzacht: Boolean,
+			_hokken: Number,
+			_totaal: Number,
             fillextrusionheight: {
                 type: Object,
                 value: function() {
@@ -122,6 +101,11 @@ class VerkoopApp extends LitElement {
 	}
 	constructor() {
 		super();
+		this._panden = true;
+		this._breeklijnen = true;
+		this._hardzacht = true;
+		this._hokken = 0;
+		this._totaal = 0;
 	}
 
     _calcTotaal(hokken, panden, hardzacht,breeklijnen){
@@ -310,10 +294,6 @@ class VerkoopApp extends LitElement {
 	}
 	ready(){
 		super.ready();
-		this.$.openingdialog.open();
-		this.layers.forEach(function(l,i){
-			
-		});
 	}
 	openpricingdialog(){
 		this.$.pricingdialog.open();
@@ -325,10 +305,10 @@ class VerkoopApp extends LitElement {
 		this.$.openingdialog.open();
 	}
 
-	render() {
+	//static get template() {
+	//	return `
+	render({BANAAN}) {
 		return html`
-
-
 <style include="iron-flex iron-flex-alignment"></style>
 <style is="custom-style">
 	:host {
@@ -450,7 +430,7 @@ class VerkoopApp extends LitElement {
  </style>
  <opening-dialog id='openingdialog' opened></opening-dialog>
  <pricing-dialog id='pricingdialog' ></pricing-dialog>
- <offerte-dialog id='offertedialog' panden=[[_panden]] breeklijnen=[[_breeklijnen]] bodemgebieden=[[_hardzacht]] hokken=[[_hokken]] totaal=[[_totaal]]></offerte-dialog>
+ <offerte-dialog id='offertedialog' panden=${this._panden} breeklijnen="${this._breeklijnen}" bodemgebieden="${this._hardzacht}" hokken="${this._hokken}" totaal="${this._totaal}"></offerte-dialog>
  <app-drawer-layout fullbleed>
 		<app-drawer slot="drawer" id='menu' >
 		
@@ -467,11 +447,12 @@ class VerkoopApp extends LitElement {
 				</div>
 				
 				<div class="step">
+					<p>CHECK: ${this.BANAAN}</p>
 					<b>Gewenste bestanden</b>
 					<p>
-						<paper-checkbox checked={{_panden}}>Gebouwen</paper-checkbox><br/>
-						<paper-checkbox checked={{_breeklijnen}}>Hoogtelijnen</paper-checkbox><br/>
-						<paper-checkbox checked={{_hardzacht}}>Bodemvlakken</paper-checkbox>
+						<paper-checkbox checked=${this._panden}>Gebouwen</paper-checkbox><br/>
+						<paper-checkbox checked=${this._breeklijnen}>Hoogtelijnen</paper-checkbox><br/>
+						<paper-checkbox checked=${this._hardzacht}>Bodemvlakken</paper-checkbox>
 					</p>
 				</div>
 				
@@ -494,8 +475,8 @@ class VerkoopApp extends LitElement {
 					<b>Bestel</b>
 					<div class="horizontal layout justified">
 						<div>
-							Geselecteerd: <span>[[_hokken]]</span> km&sup2;<br/>
-							Totaal: &euro; <span>[[_totaal]]</span>,-
+							Geselecteerd: <span>${this._hokken}</span> km&sup2;<br/>
+							Totaal: &euro; <span>${this._totaal}</span>,-
 						</div>
 						<div class="flex"></div>
 						<paper-icon-button id="offerbutton" icon="shopping-cart" on-click="openoffertedialog"></paper-icon-button>
@@ -531,6 +512,8 @@ class VerkoopApp extends LitElement {
 			</app-header>
 			<div class="flex">
 				<content></content>
+				<mb-map id="map"></mb-map>
+				<!--
                 <mapbox-gl id="map"
                     interactive
                     map="{{map}}"
@@ -541,7 +524,8 @@ class VerkoopApp extends LitElement {
                     longitude=4.555
                     zoom=13
                     pitch=45
-                    bearing=0></mapbox-gl>
+					bearing=0></mapbox-gl>
+				-->
 			</div>
 	</app-header-layout>
 	
