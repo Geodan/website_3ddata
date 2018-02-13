@@ -45,7 +45,11 @@
     .input-row > *:not(:first-child) {
         margin-left: 8px;
     }
+    .hidden {
+        display: none;
+    }
 </style>
+
 <paper-dialog id='dialog'>
   <paper-dialog-scrollable>
     <iron-form id="gform">
@@ -53,46 +57,46 @@
         <div class="subsection grid">
             <section>
                 <h2 id="accountInfoHeading">Bestelling</h2>
-                
+                <paper-input class="hidden" name="hokken" value="[[_selectedhokkenstr]]"></paper-input>
                 <b>[[hokken]]</b> km&sup2; geselecteerd voor:<br>
             
                 <paper-checkbox name="gebouwen" enabled checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
                 <paper-checkbox name="hoogtelijnen" enabled checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
                 <paper-checkbox name="bodemgebieden" enabled checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
 
-                Totaalprijs: 
-
-                <div class="row input-row">
-                    <paper-input name="strippenkaart" label="Code strippenkaart"></paper-input>
-                    <paper-icon-button icon="icons:info"></paper-icon-button>
-                </div>
                 <div class="row total-row">
                     <div class="flex">Totaal</div>
                     <div>&euro; [[totaal]]</div>
                 </div>
+
+                <div class="row input-row">
+                    <paper-input name="strippenkaart" label="Code strippenkaart"></paper-input>
+                    <!--<paper-icon-button icon="icons:info"></paper-icon-button>-->
+                </div>
+                
             
             </section>
             <section>
                 <h2>Gegevens</h2>
                 <div class="row input-row">
-                    <paper-input name="name" label="Naam" value="Test" required></paper-input>
+                    <paper-input name="name" label="Naam" required></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input name="organisation" label="Organisatie" value="Test"></paper-input>
+                    <paper-input name="organisation" label="Organisatie"></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input name="street" label="Straat" size="200" value="Test"></paper-input>
-                    <paper-input name="number" label="Nummer" value=42></paper-input>
+                    <paper-input name="street" label="Straat" size="200"></paper-input>
+                    <paper-input name="number" label="Nummer"></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input name="postcode" label="Postcode" value="9999AA"></paper-input>
-                    <paper-input name="city" label="Plaats" value="Lutjebroek"></paper-input>
+                    <paper-input name="postcode" label="Postcode"></paper-input>
+                    <paper-input name="city" label="Plaats"></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input name="phone" label="Telefoonnummer" pattern="\d{10,}" value="06123456789"></paper-input>
+                    <paper-input name="phone" label="Telefoonnummer" pattern="\d{10,}"></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input name="email" label="E-mail" value="test@test.nl" required></paper-input>
+                    <paper-input name="email" label="E-mail" required></paper-input>
                 </div>
             </section>
         </div>
@@ -124,6 +128,9 @@ class OfferteDialog extends Polymer.Element {
                 type: Number,
                 value: 0
             },
+            selectedhokken: {
+                type: Array
+            },
             panden: {
                 type: Number,
                 value: 0
@@ -135,9 +142,17 @@ class OfferteDialog extends Polymer.Element {
             bodemgebieden: {
                 type: Number,
                 value: 0
+            },
+            _selectedhokkenstr: {
+                type: String
             }
         }
     }
+    static get observers() {
+		return [
+        'selectedhokkenchanged(selectedhokken.*)'
+    	]
+	}
     open(){
         this.$.dialog.open();
     }
@@ -150,6 +165,8 @@ class OfferteDialog extends Polymer.Element {
     }
     submitForm(){
         this.$.gform.submit();
+        this.$.dialog.close();
+        this.dispatchEvent(new CustomEvent('submit'));
     }
     sendForm(event){
         event.preventDefault();           // we are submitting via xhr below
@@ -161,6 +178,9 @@ class OfferteDialog extends Polymer.Element {
 
         console.log(request.body);
         request.generateRequest();
+    }
+    selectedhokkenchanged(selectedhokken){
+        this._selectedhokkenstr = this.selectedhokken.toString();
     }
 }
 window.customElements.define(OfferteDialog.is, OfferteDialog);
