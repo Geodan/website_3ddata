@@ -170,9 +170,11 @@ class OfferteDialog extends Polymer.Element {
         });
     }
     submitForm(){
-        this.$.gform.submit();
-        this.$.dialog.close();
-        this.dispatchEvent(new CustomEvent('submit'));
+        if (this.$.gform.validate()){
+            this.$.gform.submit();
+            this.$.dialog.close();
+            this.dispatchEvent(new CustomEvent('submit'));
+        }
     }
     sendForm(event){
         event.preventDefault();           // we are submitting via xhr below
