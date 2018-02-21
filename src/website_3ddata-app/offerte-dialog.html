@@ -60,9 +60,15 @@
                 <paper-input class="hidden" name="hokken" value="[[_selectedhokkenstr]]"></paper-input>
                 <b>[[hokken]]</b> km&sup2; geselecteerd voor:<br>
             
-                <paper-checkbox name="gebouwen" enabled checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
-                <paper-checkbox name="hoogtelijnen" enabled checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
-                <paper-checkbox name="bodemgebieden" enabled checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
+                <paper-checkbox disabled checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
+                <paper-checkbox disabled checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
+                <paper-checkbox disabled checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
+
+                <div class='hidden'>
+                    <paper-checkbox name="gebouwen" enabled checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
+                    <paper-checkbox name="hoogtelijnen" enabled checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
+                    <paper-checkbox name="bodemgebieden" enabled checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
+                </div>
 
                 <div class="row total-row">
                     <div class="flex">Totaal</div>
