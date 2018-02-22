@@ -1,30 +1,31 @@
-import { Element } from '../../../../@polymer/polymer/polymer-element.js';
-import '../../../../@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '../../../../@polymer/iron-pages/iron-pages.js';
-import '../../../../@polymer/iron-icons/iron-icons.js';
-import '../../../../@polymer/iron-collapse/iron-collapse.js';
-import '../../../../@polymer/paper-tabs/paper-tabs.js';
-import '../../../../@polymer/paper-tabs/paper-tab.js';
-import '../../../../@polymer/paper-listbox/paper-listbox.js';
-import '../../../../@polymer/paper-card/paper-card.js';
-import '../../../../@polymer/paper-toast/paper-toast.js';
-import '../../../../@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
-import '../../../../@polymer/app-layout/app-drawer/app-drawer.js';
-import '../../../../@polymer/app-layout/app-header-layout/app-header-layout.js';
-import '../../../../@polymer/app-layout/app-header/app-header.js';
-import '../../../../@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '../../../../@polymer/paper-input/paper-input.js';
-import '../../../../@polymer/paper-button/paper-button.js';
-import '../../../../@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import '../../../../@polymer/paper-item/paper-item.js';
-import '../../../../@polymer/paper-item/paper-item-body.js';
-import '../../../../@polymer/paper-icon-button/paper-icon-button.js';
-import '../../../../@polymer/paper-spinner/paper-spinner.js';
-import '../../../../@polymer/paper-toggle-button/paper-toggle-button.js';
-import '../../../../@polymer/paper-checkbox/paper-checkbox.js';
-import '../../../../@polymer/paper-radio-group/paper-radio-group.js';
-import '../../../../@polymer/paper-radio-button/paper-radio-button.js';
-import '../../../../mapbox-gl/mapbox-gl.js';
+import { Element } from '../../node_modules/@polymer/polymer/polymer-element.js';
+import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../node_modules/@polymer/iron-pages/iron-pages.js';
+import '../../node_modules/@polymer/iron-icons/iron-icons.js';
+import '../../node_modules/@polymer/iron-collapse/iron-collapse.js';
+import '../../node_modules/@polymer/paper-tabs/paper-tabs.js';
+import '../../node_modules/@polymer/paper-tabs/paper-tab.js';
+import '../../node_modules/@polymer/paper-listbox/paper-listbox.js';
+import '../../node_modules/@polymer/paper-card/paper-card.js';
+import '../../node_modules/@polymer/paper-toast/paper-toast.js';
+import '../../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
+import '../../node_modules/@polymer/app-layout/app-drawer/app-drawer.js';
+import '../../node_modules/@polymer/app-layout/app-header-layout/app-header-layout.js';
+import '../../node_modules/@polymer/app-layout/app-header/app-header.js';
+import '../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '../../node_modules/@polymer/paper-input/paper-input.js';
+import '../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
+import '../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '../../node_modules/@polymer/paper-spinner/paper-spinner.js';
+import '../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
+import '../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
+import '../../node_modules/@polymer/paper-radio-group/paper-radio-group.js';
+import '../../node_modules/@polymer/paper-radio-button/paper-radio-button.js';
+//import '../../node_modules/mapbox-gl/mapbox-gl.js';
+import './mapbox-element.js';
 import './gm-search.js';
 import './opening-dialog.js';
 import './pricing-dialog.js';
@@ -234,8 +235,11 @@ $_documentContainer.innerHTML = `<dom-module id="verkoop-app">
 				</app-toolbar>
 			</app-header>
 			<div class="flex">
-				<content></content>
+                <content></content>
+                <mapbox-element id="map" on-mapready="_mapChanged" map="{{map}}"></mapbox-element>
+                <!--
                 <mapbox-gl id="map" interactive="" map="{{map}}" script-src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js" access-token="pk.eyJ1IjoidGlsdCIsImEiOiJjaXl5dnAydjYwMDAxMnFwYWR1Z2ZjMngwIn0.JYt8pUcgFf9QETgo5FzA0A" map-style-url="mapbox://styles/mapbox/streets-v9" latitude="52.255" longitude="4.555" zoom="13" pitch="45" bearing="0"></mapbox-gl>
+                -->
 			</div>
 	</app-header-layout>
 	
@@ -438,10 +442,11 @@ class VerkoopApp extends Element {
         
     }
 
-    _mapChanged(){
+    _mapChanged(e){
         var self =this;
-        this.map.on('load', function() {
-            var map = self.map;
+        var map = e.detail;
+        map.on('load', function() {
+            //var map = self.map;
             window.map = map;
             map.addSource('kmhokken', {
                 type: 'vector',

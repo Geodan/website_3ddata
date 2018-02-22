@@ -1,12 +1,12 @@
-import { Element } from '../../../../@polymer/polymer/polymer-element.js';
-import '../../../../@polymer/iron-ajax/iron-ajax.js';
-import '../../../../@polymer/iron-selector/iron-selector.js';
-import '../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../@polymer/paper-input/paper-input.js';
-import '../../../../@polymer/paper-item/paper-item.js';
-import '../../../../@polymer/paper-item/paper-item-body.js';
-import '../../../../terraformer/terraformer.min.js';
-import '../../../../terraformer-wkt-parser/terraformer-wkt-parser.min.js';
+import { Element } from '../../node_modules/@polymer/polymer/polymer-element.js';
+import '../../node_modules/@polymer/iron-ajax/iron-ajax.js';
+import '../../node_modules/@polymer/iron-selector/iron-selector.js';
+import '../../node_modules/@polymer/iron-icon/iron-icon.js';
+import '../../node_modules/@polymer/paper-input/paper-input.js';
+import '../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../node_modules/@polymer/paper-item/paper-item-body.js';
+//import '../../node_modules/terraformer/terraformer.min.js';
+//import '../../node_modules/terraformer-wkt-parser/terraformer-wkt-parser.min.js';
 
 class GmGeosearch extends Element {
   static get template() {

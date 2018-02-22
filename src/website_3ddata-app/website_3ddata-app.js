@@ -1,4 +1,4 @@
-import { Element } from '../../../../@polymer/polymer/polymer-element.js';
+import { Element } from '../../node_modules/@polymer/polymer/polymer-element.js';
 /**
  * @customElement
  * @polymer

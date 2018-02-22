@@ -1,8 +1,8 @@
-import { Element } from '../../../../@polymer/polymer/polymer-element.js';
-import '../../../../@polymer/paper-dialog/paper-dialog.js';
-import '../../../../@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
-import '../../../../@polymer/paper-button/paper-button.js';
-import '../../../../@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import { Element } from '../../node_modules/@polymer/polymer/polymer-element.js';
+import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
+import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 const $_documentContainer = document.createElement('div');
 $_documentContainer.setAttribute('style', 'display: none;');
 
