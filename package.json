@@ -1,0 +1,33 @@
+{
+  "name": "@polymer/website_3ddata",
+  "flat": true,
+  "version": "",
+  "description": "Sales website for 3D data",
+  "main": "index.html",
+  "dependencies": {
+    "@polymer/polymer": "^3.0.0-pre.1",
+    "@polymer/paper-item": "^3.0.0-pre.1",
+    "@polymer/paper-spinner": "^3.0.0-pre.1",
+    "@polymer/paper-toggle-button": "^3.0.0-pre.1",
+    "@polymer/paper-checkbox": "^3.0.0-pre.1",
+    "@polymer/paper-radio-group": "^3.0.0-pre.1",
+    "@polymer/paper-radio-button": "^3.0.0-pre.1",
+    "@polymer/app-layout": "^3.0.0-pre.1",
+    "@polymer/paper-tabs": "^3.0.0-pre.1",
+    "@polymer/paper-listbox": "^3.0.0-pre.1",
+    "@polymer/paper-input": "^3.0.0-pre.1",
+    "@polymer/paper-button": "^3.0.0-pre.1",
+    "@polymer/paper-dropdown-menu": "^3.0.0-pre.1",
+    "@polymer/iron-pages": "^3.0.0-pre.1",
+    "@polymer/iron-icons": "^3.0.0-pre.1",
+    "@polymer/iron-collapse": "^3.0.0-pre.1",
+    "@polymer/iron-ajax": "^3.0.0-pre.1",
+    "@polymer/iron-selector": "^3.0.0-pre.1",
+    "@polymer/paper-card": "^3.0.0-pre.1",
+    "@polymer/paper-dialog": "^3.0.0-pre.1",
+    "@polymer/paper-dialog-scrollable": "^3.0.0-pre.1",
+    "@polymer/iron-form": "^3.0.0-pre.1",
+    "@polymer/paper-toast": "^3.0.0-pre.1"
+  },
+  "devDependencies": {}
+}

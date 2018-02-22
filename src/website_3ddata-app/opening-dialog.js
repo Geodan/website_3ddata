@@ -1,10 +1,12 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+import { Element } from '../../../../@polymer/polymer/polymer-element.js';
+import '../../../../@polymer/paper-dialog/paper-dialog.js';
+import '../../../../@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '../../../../@polymer/paper-button/paper-button.js';
+import '../../../../@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+const $_documentContainer = document.createElement('div');
+$_documentContainer.setAttribute('style', 'display: none;');
 
-<dom-module id="opening-dialog">
+$_documentContainer.innerHTML = `<dom-module id="opening-dialog">
 
 <template>
 <style include="iron-flex iron-flex-alignment"></style>
@@ -23,7 +25,7 @@
 		background:var(--geodan-button-hover);
 	}
 </style>
-<paper-dialog id='dialog' opened='true'>
+<paper-dialog id="dialog" opened="true">
   <h2>3Ddatalab.nl 3D-modellen voor SRM2-geluidsstudies</h2>
   <paper-dialog-scrollable>
     
@@ -42,15 +44,15 @@
             <li>3D-gebouwen: Blokken op nokhoogte, waarbij een gebouw is
             gesplitst op relevante interne hoogteverschillen. De panden
             zijn voorzien van adres- en functie-informatie.
-            <li>3D-hoogtelijnen: breaklines (schouder en teen van een talud).
-            <li>2D-bodemgebieden: verharding en water met B=0
-            </ul>
+            </li><li>3D-hoogtelijnen: breaklines (schouder en teen van een talud).
+            </li><li>2D-bodemgebieden: verharding en water met B=0
+            </li></ul>
             <p>
             De bestanden zijn direct geschikt voor import in GeoMilieu en
             WinHavik.
             </p>
         </div>
-        <div><img width="225px" src="../img/opening01.jpg"/></div>
+        <div><img width="225px" src="../img/opening01.jpg"></div>
     </div>
 
     <h3>Actuele en betrouwbare gegevens</h3>
@@ -64,7 +66,7 @@
             herleidbaar zijn naar de basisgegevens.
             </p>
         </div>
-        <div><img width="225px" src="../img/opening02.jpg"/></div>
+        <div><img width="225px" src="../img/opening02.jpg"></div>
     </div>
 
     <h3>Klik en bestel direct via deze site</h3>
@@ -77,7 +79,7 @@
             op deze mail wordt de order in gang gezet.
             </p>
         </div>
-        <div><img width="225px" src="../img/opening03.jpg"/></div>
+        <div><img width="225px" src="../img/opening03.jpg"></div>
     </div>
 
     <h3>Stuur een mail voor een groter studiegebied</h3>
@@ -88,16 +90,20 @@
         
   </paper-dialog-scrollable>
   <div class="buttons">
-    <paper-button class="geodan" dialog-dismiss>Verder</paper-button>
+    <paper-button class="geodan" dialog-dismiss="">Verder</paper-button>
   </div>
 </paper-dialog>
 </template>
  <!--</dom-module>-->
 
-<script>
-class OpeningDialog extends Polymer.Element {
-	static get is() { return 'opening-dialog'; }
-	static get properties() {
+
+</dom-module>`;
+
+document.head.appendChild($_documentContainer);
+/*</dom-module>*/
+class OpeningDialog extends Element {
+    static get is() { return 'opening-dialog'; }
+    static get properties() {
         return {
         }
     }
@@ -106,5 +112,3 @@ class OpeningDialog extends Polymer.Element {
     }
 }
 window.customElements.define(OpeningDialog.is, OpeningDialog);
-</script>
-</dom-module>

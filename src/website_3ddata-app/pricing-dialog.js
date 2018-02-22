@@ -1,10 +1,12 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid.html">
-<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid-column.html">
+import { Element } from '../../../../@polymer/polymer/polymer-element.js';
+import '../../../../@polymer/paper-dialog/paper-dialog.js';
+import '../../../../@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '../../../../vaadin-grid/vaadin-grid.js';
+import '../../../../vaadin-grid/vaadin-grid-column.js';
+const $_documentContainer = document.createElement('div');
+$_documentContainer.setAttribute('style', 'display: none;');
 
-<dom-module id="pricing-dialog">
+$_documentContainer.innerHTML = `<dom-module id="pricing-dialog">
 
 <template>
 <style include="iron-flex iron-flex-alignment"></style>
@@ -13,7 +15,7 @@
         width: 50%;
     }
 </style>
-<paper-dialog id='dialog'>
+<paper-dialog id="dialog">
   <h2>Prijsinformatie</h2>
   <paper-dialog-scrollable>
         <vaadin-grid items="[[priceclasses]]">
@@ -22,33 +24,33 @@
                 <template>[[item.class]]</template>
             </vaadin-grid-column>
             <vaadin-grid-column width="10%">
-                <template class="header">Gebouwen<br>Prijs/km&sup2;</template>
-                <template><template is="dom-if" if=[[item.totaal]]>&euro;</template> [[item.gebouwen]]</template>
+                <template class="header">Gebouwen<br>Prijs/km²</template>
+                <template><template is="dom-if" if="[[item.totaal]]">€</template> [[item.gebouwen]]</template>
             </vaadin-grid-column>
             <vaadin-grid-column width="calc(10% - 100px)">
-                <template class="header">Hoogtelijnen<br>Prijs/km&sup2;</template>
-                <template><template is="dom-if" if=[[item.totaal]]>&euro;</template> [[item.hoogtelijnen]]</template>
+                <template class="header">Hoogtelijnen<br>Prijs/km²</template>
+                <template><template is="dom-if" if="[[item.totaal]]">€</template> [[item.hoogtelijnen]]</template>
             </vaadin-grid-column>
             <vaadin-grid-column width="calc(10% - 100px)">
-                <template class="header">Bodemgebieden<br>Prijs/km&sup2;</template>
-                <template><template is="dom-if" if=[[item.totaal]]>&euro;</template> [[item.bodemgebieden]]</template>
+                <template class="header">Bodemgebieden<br>Prijs/km²</template>
+                <template><template is="dom-if" if="[[item.totaal]]">€</template> [[item.bodemgebieden]]</template>
             </vaadin-grid-column>
             <vaadin-grid-column width="calc(10% - 100px)">
-                <template class="header">Totaal<br>Prijs/km&sup2;</template>
-                <template><template is="dom-if" if=[[item.totaal]]>&euro;</template> [[item.totaal]]</template>
+                <template class="header">Totaal<br>Prijs/km²</template>
+                <template><template is="dom-if" if="[[item.totaal]]">€</template> [[item.totaal]]</template>
             </vaadin-grid-column>
         </vaadin-grid>
         <b>Kortingen</b>
         <p>
-                Bij bestelling van alle drie de bestandstypen wordt een combi-korting berekend van 10%. De totaal prijs is dan 10% lager dan de som van de prijzen per bestandstypen. <br/>							
+                Bij bestelling van alle drie de bestandstypen wordt een combi-korting berekend van 10%. De totaal prijs is dan 10% lager dan de som van de prijzen per bestandstypen. <br>							
                 Bij grotere afname (meer km2) wordt de gemiddelde prijs per km2-vlak lager. Bij een bestelling van bijvoorbeeld 26 km2 geldt de bijbehorende km2-prijs ook voor de eerste 25 kilometervlakken. Zo bouw je een aardige korting op.
         </p>
         <b>Strippenkaart</b>
         <p>
-            Ook als je niet nu maar later meer km's model wenst dan profiteer je van korting met onze strippenkaart.<br/>
-            Je kan de strippenkaart in de loop van het jaar besteden. Het tegoed vervalt een jaar na aankoop.<br/>	
-            Met een strippenkaart voor 50 km&sup2;, download je bijvoorbeeld nu 12 km&sup2; en later in het jaar 15 km&sup2; en nog eens 23 km&sup2;. Tot je kaart op is.<br/>
-            Je betaalt dan niet het normale '10-25 km&sup2;'-tarief maar profiteert van de korting met het '25-50 km&sup2;'- tarief. Hoe groter het oppervlak, hoe lager de prijs per km&sup2; is.<br/>
+            Ook als je niet nu maar later meer km's model wenst dan profiteer je van korting met onze strippenkaart.<br>
+            Je kan de strippenkaart in de loop van het jaar besteden. Het tegoed vervalt een jaar na aankoop.<br>	
+            Met een strippenkaart voor 50 km², download je bijvoorbeeld nu 12 km² en later in het jaar 15 km² en nog eens 23 km². Tot je kaart op is.<br>
+            Je betaalt dan niet het normale '10-25 km²'-tarief maar profiteert van de korting met het '25-50 km²'- tarief. Hoe groter het oppervlak, hoe lager de prijs per km² is.<br>
             De strippenkaart geldt enkel voor het totaalpakket (gecombineerde aankoop van gebouwen, hoogtelijnen en bodemgebieden).					
         </p>
         <vaadin-grid items="[[strippenkaart]]">
@@ -72,22 +74,26 @@
             -->
             <vaadin-grid-column width="calc(10% - 100px)">
                 <template class="header">Strippenkaart<br>Prijs</template>
-                <template>&euro; [[item.totaal]]</template>
+                <template>€ [[item.totaal]]</template>
             </vaadin-grid-column>
         </vaadin-grid>            
     
   </paper-dialog-scrollable>
   <div class="buttons">
-    <paper-button dialog-dismiss>Sluit</paper-button>
+    <paper-button dialog-dismiss="">Sluit</paper-button>
   </div>
 </paper-dialog>
 </template>
  <!--</dom-module>-->
 
-<script>
-class PricingDialog extends Polymer.Element {
-	static get is() { return 'pricing-dialog'; }
-	static get properties() {
+
+</dom-module>`;
+
+document.head.appendChild($_documentContainer);
+/*</dom-module>*/
+class PricingDialog extends Element {
+    static get is() { return 'pricing-dialog'; }
+    static get properties() {
         return {
             priceclasses: {
                 type: Object,
@@ -123,5 +129,3 @@ class PricingDialog extends Polymer.Element {
     }
 }
 window.customElements.define(PricingDialog.is, PricingDialog);
-</script>
-</dom-module>

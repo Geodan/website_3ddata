@@ -1,13 +1,15 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+import { Element } from '../../../../@polymer/polymer/polymer-element.js';
+import '../../../../@polymer/paper-dialog/paper-dialog.js';
+import '../../../../@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '../../../../@polymer/paper-input/paper-input.js';
+import '../../../../@polymer/paper-button/paper-button.js';
+import '../../../../@polymer/paper-icon-button/paper-icon-button.js';
+import '../../../../@polymer/paper-checkbox/paper-checkbox.js';
+import '../../../../@polymer/iron-form/iron-form.js';
+const $_documentContainer = document.createElement('div');
+$_documentContainer.setAttribute('style', 'display: none;');
 
-<dom-module id="offerte-dialog">
+$_documentContainer.innerHTML = `<dom-module id="offerte-dialog">
 
 <template>
 <style include="iron-flex iron-flex-alignment"></style>
@@ -50,7 +52,7 @@
     }
 </style>
 
-<paper-dialog id='dialog'>
+<paper-dialog id="dialog">
   <paper-dialog-scrollable>
     <iron-form id="gform">
         <form method="POST" action="https://script.google.com/a/geodan.nl/macros/s/AKfycbzvArH9RXdknHFP6GujzeMVvBrH3zBzlXpZYJkaNkj8TYF5IQ/exec">
@@ -58,15 +60,15 @@
             <section>
                 <h2 id="accountInfoHeading">Bestelling</h2>
                 <paper-input class="hidden" name="hokken" value="[[_selectedhokkenstr]]"></paper-input>
-                <b>[[hokken]]</b> km&sup2; geselecteerd voor:<br>
+                <b>[[hokken]]</b> km² geselecteerd voor:<br>
             
-                <paper-checkbox name="gebouwen" enabled checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
-                <paper-checkbox name="hoogtelijnen" enabled checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
-                <paper-checkbox name="bodemgebieden" enabled checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
+                <paper-checkbox name="gebouwen" enabled="" checked="{{panden}}" label="Gebouwen"></paper-checkbox> Gebouwen<br>
+                <paper-checkbox name="hoogtelijnen" enabled="" checked="{{breeklijnen}}" label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
+                <paper-checkbox name="bodemgebieden" enabled="" checked="{{bodemgebieden}}" label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
 
                 <div class="row total-row">
                     <div class="flex">Totaal</div>
-                    <div>&euro; [[totaal]]</div>
+                    <div>€ [[totaal]]</div>
                 </div>
 
                 <div class="row input-row">
@@ -79,7 +81,7 @@
             <section>
                 <h2>Gegevens</h2>
                 <div class="row input-row">
-                    <paper-input name="name" label="Naam" required></paper-input>
+                    <paper-input name="name" label="Naam" required=""></paper-input>
                 </div>
                 <div class="row input-row">
                     <paper-input name="organisation" label="Organisatie"></paper-input>
@@ -93,10 +95,10 @@
                     <paper-input name="city" label="Plaats"></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input name="phone" label="Telefoonnummer" pattern="\d{10,}"></paper-input>
+                    <paper-input name="phone" label="Telefoonnummer" pattern="\\d{10,}"></paper-input>
                 </div>
                 <div class="row input-row">
-                    <paper-input name="email" label="E-mail" required></paper-input>
+                    <paper-input name="email" label="E-mail" required=""></paper-input>
                 </div>
             </section>
         </div>
@@ -108,17 +110,21 @@
     </p>
   </paper-dialog-scrollable>
   <div class="buttons">
-    <paper-button dialog-dismiss>Sluit</paper-button>
-    <paper-button raised on-click="submitForm">Verzend</paper-button>
+    <paper-button dialog-dismiss="">Sluit</paper-button>
+    <paper-button raised="" on-click="submitForm">Verzend</paper-button>
   </div>
 </paper-dialog>
 </template>
  <!--</dom-module>-->
 
-<script>
-class OfferteDialog extends Polymer.Element {
-	static get is() { return 'offerte-dialog'; }
-	static get properties() {
+
+</dom-module>`;
+
+document.head.appendChild($_documentContainer);
+/*</dom-module>*/
+class OfferteDialog extends Element {
+    static get is() { return 'offerte-dialog'; }
+    static get properties() {
         return {
             totaal: {
                 type: Number,
@@ -149,10 +155,10 @@ class OfferteDialog extends Polymer.Element {
         }
     }
     static get observers() {
-		return [
+        return [
         'selectedhokkenchanged(selectedhokken.*)'
-    	]
-	}
+        ]
+    }
     open(){
         this.$.dialog.open();
     }
@@ -184,5 +190,3 @@ class OfferteDialog extends Polymer.Element {
     }
 }
 window.customElements.define(OfferteDialog.is, OfferteDialog);
-</script>
-</dom-module>
