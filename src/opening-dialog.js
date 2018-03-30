@@ -1,21 +1,28 @@
-import {LitElement} from '../../node_modules/@polymer/lit-element/lit-element.js'
-import { html } from '../../node_modules/lit-html/lib/lit-extended.js';
-import { Element } from '../../node_modules/@polymer/polymer/polymer-element.js';
-import { IronOverlayBehaviorImpl } from '../../node_modules/@polymer/iron-overlay-behavior/iron-overlay-behavior.js';
-import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
-import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
-import '../../node_modules/@polymer/paper-button/paper-button.js';
-import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import {LitElement,html} from '@polymer/lit-element/lit-element.js'
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { IronOverlayBehaviorImpl } from '@polymer/iron-overlay-behavior/iron-overlay-behavior.js';
+import '@polymer/paper-dialog/paper-dialog.js';
+import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '@polymer/paper-button/paper-button.js';
+import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 
 
 class OpeningDialog extends LitElement {
-	static get is() { return 'opening-dialog'; }
+    static get is() { return 'opening-dialog'; }
+    static get properties(){
+        return {
+            opened: {
+                type: Boolean,
+                notify: true
+            }
+        }
+    }
     open(){
-        this.$.dialog.open();
+        this.opened =true;
     }
     //static get template() {
     //   return `
-    render(){
+    render({opened}){
         return html`
     
 <style include="iron-flex iron-flex-alignment"></style>
@@ -35,7 +42,7 @@ class OpeningDialog extends LitElement {
 		background:var(--geodan-button-hover);
 	}
 </style>
-  <paper-dialog id='dialog' opened='true'>
+  <paper-dialog id='dialog' opened='${opened}' on-opened-changed="${e => this.opened = e.target.opened}">
   <h2>3Ddatalab.nl 3D-modellen voor SRM2-geluidsstudies</h2>
   <paper-dialog-scrollable>
     

@@ -1,13 +1,13 @@
-import {LitElement} from '../../node_modules/@polymer/lit-element/lit-element.js'
+import {LitElement,html} from '@polymer/lit-element/lit-element.js'
 import { repeat } from '../../node_modules/lit-html/lib/repeat.js';
-import { html } from '../../node_modules/lit-html/lib/lit-extended.js';
-import { Element } from '../../node_modules/@polymer/polymer/polymer-element.js';
+//import { repeat } from '@polymer/polymer/lib/elements/dom-repeat.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 
-import '../../node_modules/@polymer/iron-ajax/iron-ajax.js';
-import '../../node_modules/@polymer/iron-selector/iron-selector.js';
-import '../../node_modules/@polymer/iron-icon/iron-icon.js';
-import '../../node_modules/@polymer/paper-input/paper-input.js';
-import '../../node_modules/@polymer/paper-item/paper-item.js';
+import '@polymer/iron-ajax/iron-ajax.js';
+import '@polymer/iron-selector/iron-selector.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/paper-input/paper-input.js';
+import '@polymer/paper-item/paper-item.js';
 
 //import * as Terraformer from "https://unpkg.com/terraformer@1.0.8";
 //import "https://unpkg.com/terraformer-wkt-parser@1.1.2";

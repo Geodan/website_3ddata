@@ -1,4 +1,6 @@
 {
+  "npm": true,
+  "moduleResolution": "node",
   "entrypoint": "index.html",
   "shell": "src/website_3ddata-app/verkoop-app.html",
   "fragments": [
