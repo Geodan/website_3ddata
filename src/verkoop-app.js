@@ -1,6 +1,7 @@
-import { LitElement,html } from '@polymer/lit-element/lit-element.js';
+//import { LitElement,html } from '@polymer/lit-element/lit-element.js';
 //import { html } from '../../node_modules/lit-html/lib/lit-extended.js';
-import { PolymerElement  } from '@polymer/polymer/polymer-element.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+//import {html, render} from '@polymer/lit-html/lit-html.js';
 import '@polymer/app-layout/app-header/app-header.js';
 import '@polymer/app-layout/app-header-layout/app-header-layout.js';
 import '@polymer/app-layout/app-drawer/app-drawer.js';
@@ -35,6 +36,7 @@ import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
 //import "https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.3/turf.min.js";
 //import "https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js";
 
+import './shop-cart-data.js';
 import './mb-map.js';
 import './opening-dialog.js';
 import './offerte-dialog.js';
@@ -42,108 +44,59 @@ import './pricing-dialog.js';
 import './gm-search.js';
 
 
-class VerkoopApp extends LitElement {
+class VerkoopApp extends PolymerElement {
 	static get is() { return 'verkoop-app'; }
-	// Public property API that triggers re-render (synched with attributes)
 	static get properties() {
 		return {
-			_panden:  Boolean,
-			_breeklijnen: Boolean,
-			_hardzacht: Boolean,
-			_hokken: Number,
-			_totaal: Number,
-			_openingdialogopenend: {
-				type: Boolean,
-				observer: 'testobserver'
-			},
-			_pricingdialogopenend: Boolean,
-            fillextrusionheight: {
-                type: Object,
-                value: function() {
-                    return {
-                        'type': 'identity',
-                        'property': 'relhoogte'
-                    };
-                }
-            },
-            selectedHokken: {
-                type: Array,
-                value: function(){
-                    return [];
-                },
-                observer: '_calcTotaal'
-            },
-			offerdisabled: {
-				type: Boolean,
-				value: true,
-			},
-			selectedLayers: {
-				type: Array
-				//observer: '_selectedLayersChanged'
-			},
-			
-			layers: {
-				type: Array,
-				value: function(){
-					return [
-
-					];
-				}
-			}
+			buildings:  Boolean,
+			breaklines: Boolean,
+			hardness: Boolean,
+			hokken: Array,
+			numItems: Number,
+			total: Number,
+			_openingdialogopenend: Boolean,
+			_offertedialogopenend: Boolean,
+			_pricingdialogopenend: Boolean
 		}
-	}
-	testobserver(v){
-		debugger;
 	}
     static get observers() {
 		return [
-        '_calcTotaal(selectedHokken.*,_panden, _hardzacht, _breeklijnen)'
     	]
 	}
 	constructor() {
 		super();
-		this._panden = true;
-		this._breeklijnen = true;
-		this._hardzacht = true;
-		this._hokken = 0;
-		this._totaal = 0;
+		this.buildings = true;
+		this.breaklines = true;
+		this.hardness = true;
+		this.numItems = 0;
+		this.total = 0;
 	}
-
-    _calcTotaal(hokken, panden, hardzacht,breeklijnen){
-        var unitprice = 0;
-        unitprice += panden==true?50:0;
-        unitprice += breeklijnen==true?16:0;
-        unitprice += hardzacht==true?5:0;
-        this._hokken = this.selectedHokken.length;
-        this._totaal = this.selectedHokken.length * unitprice;
-		if (this._totaal > 0){
-			this.offerbuttonvisible = true;
-		}
-		else {
-			this.offerbuttonvisible = false;
-		}
-		
-    }
-
-	
+	_hok(e){
+		this.$.cart.setItem(e.detail);
+	}
 	deselectAll(){
-		this.selectedHokken = [];
-		var filter = ['in', 'uid'];
-		filter = filter.concat(this.selectedHokken);
-		map.setFilter("kmhokken-highlighted", filter);
+		this.hokken = [];
+		this.$.map.deselectAll();
 	}
 	zoomTo(coords){
-		this.shadowRoot.querySelector('#map').zoomTo(coords);
+		this.$.map.zoomTo(coords);
 	}
 	ready(){
 		super.ready();
-		this._openingdialogopenend = true;
+		this.$.openingdialog.open();
 	}
-
-	//static get template() {
-	//	return `
-	render({_openingdialogopenend,_pricingdialogopenend,_offertedialogopenend}) {
+	openopeningdialog(){
+		this.$.openingdialog.open();
+	}
+	openpricingdialog(){
+		this.$.pricingdialog.open();
+	}
+	openoffertedialog(){
+		this.$.offertedialog.open();
+	}
+	static get template() {
 		return html`
+	
 <style include="iron-flex iron-flex-alignment"></style>
 <style is="custom-style">
 	:host {
@@ -264,9 +217,10 @@ class VerkoopApp extends LitElement {
     }
  
  </style>
- <opening-dialog id='openingdialog' opened="${_openingdialogopenend}"></opening-dialog>
- <pricing-dialog id='pricingdialog' opened="${_pricingdialogopenend}"></pricing-dialog>
- <offerte-dialog id='offertedialog' opened="${_offertedialogopenend}" panden="${this._panden}" breeklijnen="${this._breeklijnen}" bodemgebieden="${this._hardzacht}" hokken="${this._hokken}" totaal="${this._totaal}"></offerte-dialog>
+ <shop-cart-data id='cart' total='{{total}}' num-items='{{numItems}}' hokken='{{hokken}}' buildings='[[buildings]]' breaklines='[[breaklines]]' hardness='[[hardness]]'></shop-cart-data>
+ <opening-dialog id='openingdialog' opened="[[_openingdialogopenend]]"></opening-dialog>
+ <pricing-dialog id='pricingdialog' opened="[[_pricingdialogopenend]]"></pricing-dialog>
+ <offerte-dialog id='offertedialog' opened="[[_offertedialogopenend]]" buildings="[[buildings]]" breaklines="[[breaklines]]" hardness="[[hardness]]" hokken="[[hokken]]" total="[[total]]"></offerte-dialog>
  <app-drawer-layout fullbleed>
 		<app-drawer slot="drawer" id='menu' >
 		
@@ -285,36 +239,30 @@ class VerkoopApp extends LitElement {
 				<div class="step">
 					<b>Gewenste bestanden</b>
 					<p>
-						<paper-checkbox checked="${this._panden}">Gebouwen</paper-checkbox><br/>
-						<paper-checkbox checked="${this._breeklijnen}">Hoogtelijnen</paper-checkbox><br/>
-						<paper-checkbox checked="${this._hardzacht}">Bodemvlakken</paper-checkbox>
+						<paper-checkbox checked="{{buildings}}">Gebouwen</paper-checkbox><br/>
+						<paper-checkbox checked="{{breaklines}}">Hoogtelijnen</paper-checkbox><br/>
+						<paper-checkbox checked="{{hardness}}">Bodemvlakken</paper-checkbox>
 					</p>
 				</div>
 				
 				<div class="step">
 					<b>Kies je gebied</b>
-					<p>Klik km-vlakken in de kaart<br>
+					<p>Klik km-vlakken in de kaart<br/>
 						of <a href="mailto:henk.de.kluijver@geodan.nl">mail</a> je onderzoeksgebied</p>
 					<paper-button on-click="deselectAll" style="cursor: pointer">
 						<iron-icon icon="tab-unselected"></iron-icon>&nbsp; alles deselecteren
 					</paper-button>
-					<!--
-					en/of</p>
-					upload studiegebied <paper-icon-button icon="icons:file-upload"></paper-icon-button>
-					<input label="upload" type="file" on-change="fileupload">
-					-->
-					</input>
 				</div>
 				
 				<div class="step">
 					<b>Bestel</b>
 					<div class="horizontal layout justified">
 						<div>
-							Geselecteerd: <span>${this._hokken}</span> km&sup2;<br/>
-							Totaal: &euro; <span>${this._totaal}</span>,-
+							Geselecteerd: <span>[[numItems]]</span> km&sup2;<br/>
+							Totaal: &euro; <span>[[total]]</span>,-
 						</div>
 						<div class="flex"></div>
-						<paper-icon-button id="offerbutton" icon="shopping-cart" on-click="${_ => this.shadowRoot.querySelector('#offertedialog').open()}"></paper-icon-button>
+						<paper-icon-button id="offerbutton" icon="shopping-cart" on-click="openoffertedialog"></paper-icon-button>
 					</div>
 					<p>
 					<small>NB: prijs per km daalt bij grote afname<br/>
@@ -323,14 +271,14 @@ class VerkoopApp extends LitElement {
 				</div>
 				<div class="flex"></div>
 				<div class="step">
-					<b>Informatie</b><br>
+					<b>Informatie</b><br/>
 					<div class="horizontal justified">
-						<div on-click="${_ => this.shadowRoot.querySelector('#openingdialog').open()}" style="cursor: pointer"><iron-icon icon="info"></iron-icon>Over</div>
-						<div on-click="${_ => this._pricingdialogopenend = true}" style="cursor: pointer"><iron-icon icon="info" ></iron-icon>Prijs per km&sup2;</div>
-						<a href="./data/Specificaties_3D-model_20171206.pdf" download><iron-icon icon="info"></iron-icon>Productspecificaties</a> <small>(pdf)</small><br>
+						<div on-click="openopeningdialog" style="cursor: pointer"><iron-icon icon="info"></iron-icon>Over</div>
+						<div on-click="openpricingdialog" style="cursor: pointer"><iron-icon icon="info" ></iron-icon>Prijs per km&sup2;</div>
+						<a href="./data/Specificaties_3D-model_20171206.pdf" download><iron-icon icon="info"></iron-icon>Productspecificaties</a> <small>(pdf)</small><br/>
 						<a href="" download><iron-icon icon="file-download"></iron-icon>Download proefset</a> <small>(zip)</small>
 					</div>
-					<a href="mailto:henk.de.kluijver@geodan.nl">henk.de.kluijver@geodan.nl</a> <br>
+					<a href="mailto:henk.de.kluijver@geodan.nl">henk.de.kluijver@geodan.nl</a> <br/>
 						+31 (0)6 29076163
 				</div>
 			</div>
@@ -347,7 +295,7 @@ class VerkoopApp extends LitElement {
 			</app-header>
 			<div class="flex">
 				<content></content>
-				<mb-map id="map" selectedHokken="${this.selectedHokken}"></mb-map>
+				<mb-map id="map" selectedHokken="[[this.selectedHokken]]" on-hok="_hok"></mb-map>
 			</div>
 	</app-header-layout>
 	

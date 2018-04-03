@@ -158,11 +158,12 @@ class  MbMap extends LitElement {
                 // set bbox as 5px reactangle area around clicked point
                 var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
                 var features = map.queryRenderedFeatures(bbox, { layers: ['kmhokken'] });
-
+                
                 // Run through the selected features and set a filter
                 // to match features with unique FIPS codes to activate
                 // the `counties-highlighted` layer.
                 features.forEach(feature=>{
+                    self.dispatchEvent(new CustomEvent('hok', {detail: feature.properties.uid}));
                     var i = self.selectedHokken.indexOf(feature.properties.uid);
                     if (i < 0) {
                         self.selectedHokken.push(feature.properties.uid);
@@ -176,9 +177,16 @@ class  MbMap extends LitElement {
                 filter = filter.concat(self.selectedHokken);
                 
                 map.setFilter("kmhokken-highlighted", filter);
+                self.dispatchEvent(new CustomEvent('kmhokken', {detail: {kmhokken: self.selectedHokken}}));
             });
             self.layers = map.layers;
         });
+    }
+    deselectAll(){
+        this.selectedHokken = [];
+        var filter = ['in', 'uid'];
+        filter = filter.concat(this.selectedHokken);
+        this.map.setFilter("kmhokken-highlighted", filter);
     }
     render({}){
         return html`

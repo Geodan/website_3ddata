@@ -431,6 +431,10 @@ uglify-js@2.3.0:
     optimist "~0.3.5"
     source-map "~0.1.7"
 
+"vaadin-grid@https://github.com/vaadin/vaadin-grid.git":
+  version "5.0.0-beta7"
+  resolved "https://github.com/vaadin/vaadin-grid.git#65ef30dba37eacc5014dfca20d7bfb03886164f5"
+
 wordwrap@~0.0.2:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"

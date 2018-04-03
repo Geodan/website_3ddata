@@ -2,11 +2,11 @@
   "npm": true,
   "moduleResolution": "node",
   "entrypoint": "index.html",
-  "shell": "src/website_3ddata-app/verkoop-app.html",
+  "shell": "src/verkoop-app.js",
   "fragments": [
-    "src/website_3ddata-app/offerte-dialog.html",
-    "src/website_3ddata-app/opening-dialog.html",
-    "src/website_3ddata-app/pricing-dialog.html"
+    "src/offerte-dialog.js",
+    "src/opening-dialog.js",
+    "src/pricing-dialog.js"
   ],
   "sources": [
     "src/**/*",

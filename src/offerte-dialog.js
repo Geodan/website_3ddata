@@ -1,5 +1,5 @@
-import {LitElement,html} from '@polymer/lit-element/lit-element.js'
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { IronOverlayBehaviorImpl } from '@polymer/iron-overlay-behavior/iron-overlay-behavior.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
@@ -8,7 +8,7 @@ import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '@polymer/iron-form/iron-form.js';
 
 
-class OfferteDialog extends LitElement {
+class OfferteDialog extends PolymerElement {
     static get is() { return 'offerte-dialog'; }
     static get properties(){
         return {
@@ -16,30 +16,21 @@ class OfferteDialog extends LitElement {
                 type: Boolean,
                 notify: true
             },
-            totaal: {
-                type: Number,
-                value: 0
+            numItems: {
+                computed: '_calcNumItems(hokken.*)'
             },
-            hokken: {
-                type: Number,
-                value: 0
-            },
-            panden: {
-                type: Number,
-                value: 0
-            },
-            breeklijnen: {
-                type: Number,
-                value: 0
-            },
-            bodemgebieden: {
-                type: Number,
-                value: 0
-            }
+            total: Number,
+            hokken: Object,
+            buildings: Boolean,
+            breaklines: Boolean,
+            hardness: Boolean
         }
     }
+    _calcNumItems(hokken){
+        return hokken.base.length;
+    }
     open(){
-        this.opened =true;
+        this.$.dialog.open();
     }
     ready(){
         super.ready();
@@ -62,9 +53,9 @@ class OfferteDialog extends LitElement {
         console.log(request.body);
         request.generateRequest();
     }
-    render({opened}){
+    static get template() {
         return html`
-    
+      
 <style include="iron-flex iron-flex-alignment"></style>
 <style>
  
@@ -97,18 +88,18 @@ class OfferteDialog extends LitElement {
         margin-left: 8px;
     }
 </style>
-  <paper-dialog id='dialog' opened='${opened}' on-opened-changed="${e => this.opened = e.target.opened}">
+  <paper-dialog id='dialog' opened='{{opened}}'>
   <iron-form id="gform">
         <form method="POST" action="https://script.google.com/a/geodan.nl/macros/s/AKfycbzvArH9RXdknHFP6GujzeMVvBrH3zBzlXpZYJkaNkj8TYF5IQ/exec">
         <div class="subsection grid">
             <section>
                 <h2 id="accountInfoHeading">Bestelling</h2>
                 
-                <b>[[hokken]]</b> km&sup2; geselecteerd voor:<br>
+                <b>[[numItems]]</b> km&sup2; geselecteerd voor:<br>
             
-                <paper-checkbox name="gebouwen" enabled checked={{panden}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
-                <paper-checkbox name="hoogtelijnen" enabled checked={{breeklijnen}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
-                <paper-checkbox name="bodemgebieden" enabled checked={{bodemgebieden}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
+                <paper-checkbox name="gebouwen" enabled checked={{buildings}} label="Gebouwen"></paper-checkbox> Gebouwen<br>
+                <paper-checkbox name="hoogtelijnen" enabled checked={{breaklines}} label="Hoogtelijnen"></paper-checkbox> Hoogtelijnen<br>
+                <paper-checkbox name="bodemgebieden" enabled checked={{hardness}} label="Bodemgebieden"></paper-checkbox> Bodemgebieden<br>
 
                 Totaalprijs: 
 
@@ -118,7 +109,7 @@ class OfferteDialog extends LitElement {
                 </div>
                 <div class="row total-row">
                     <div class="flex">Totaal</div>
-                    <div>&euro; [[totaal]]</div>
+                    <div>&euro; [[total]]</div>
                 </div>
             
             </section>
