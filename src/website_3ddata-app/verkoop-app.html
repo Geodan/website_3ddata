@@ -252,8 +252,8 @@
                     script-src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js"
 					access-token="pk.eyJ1IjoidGlsdCIsImEiOiJjaXl5dnAydjYwMDAxMnFwYWR1Z2ZjMngwIn0.JYt8pUcgFf9QETgo5FzA0A"
 					map-style-url="mapbox://styles/mapbox/streets-v9"
-					latitude=52.255
-                    longitude=4.555
+					latitude=52.158
+                    longitude=4.494
                     zoom=13
                     pitch=45
                     bearing=0></mapbox-gl>
@@ -475,32 +475,33 @@ class VerkoopApp extends Polymer.Element {
             }); 
             
 
-			map.addSource("odwh_bodemvlakken", {
+			map.addSource("bodemvlakken", {
                 type: 'vector',
-                tiles:["http://saturnus.geodan.nl/mvt_mimas/odwh_bodemvlakken/{z}/{x}/{y}.mvt"],
+                tiles:["http://saturnus.geodan.nl/mvt_mimas/bodemvlakken/{z}/{x}/{y}.mvt"],
                 minzoom: 13,
                 maxzoom: 18
-            });
+            });/*
             map.addLayer({
-                'id': 'odwh_bodemvlakken',
+                'id': 'bodemvlakken',
                 'type': 'fill',
-                'source': 'odwh_bodemvlakken',
-                "source-layer": "odwh_bodemvlakken",
+                'source': 'bodemvlakken',
+                "source-layer": "bodemvlakken",
 
                 'paint': {
                     'fill-color': {
                         "property": "type",
 						"type": "categorical",
                         "stops": [
-                        ['BGTwater', 'rgb(16,247,254)'],
-                        ['BGTverhard', 'rgb(200,200,200)'],
-						['BGT_onverhard', 'hsl(78,53%,87%)']
+                        ['BGT_water', 'rgb(16,247,254)'],
+                        ['BGT_verhard', 'rgb(200,200,200)'],
+						['BGT_onverhard', 'hsl(78,53%,87%)'],
+						['BGT_erf_panden', 'rgb(200,200,200)'],
                         ]
                     },
                     'fill-opacity': 1
                 }
             });
-
+			*/
 			map.addLayer({
                 "id": "kmhokken-highlighted",
                 "type": "fill",
@@ -514,17 +515,17 @@ class VerkoopApp extends Polymer.Element {
                 "filter": ["in", "uid", ""]
             }); 
 
-            map.addSource("odwh_panden", {
+            map.addSource("panden", {
                 type: 'vector',
-                tiles:["http://saturnus.geodan.nl/mvt_mimas/odwh_panden/{z}/{x}/{y}.mvt"],
+                tiles:["http://saturnus.geodan.nl/mvt_mimas/panden/{z}/{x}/{y}.mvt"],
                 minzoom: 13,
                 maxzoom: 18
             });
             map.addLayer({
                 'id': 'building-extrusion',
                 'type': 'fill-extrusion',
-                'source': 'odwh_panden',
-                "source-layer": "odwh_panden",
+                'source': 'panden',
+                "source-layer": "panden",
 
                 'paint': {
 					
