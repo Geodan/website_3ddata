@@ -1,5 +1,4 @@
 import {LitElement,html} from '@polymer/lit-element/lit-element.js'
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { repeat } from 'lit-html/lib/repeat.js';
 import { IronOverlayBehaviorImpl } from '@polymer/iron-overlay-behavior/iron-overlay-behavior.js';
 import '@polymer/paper-dialog/paper-dialog.js';
@@ -13,8 +12,7 @@ class PricingDialog extends LitElement {
     static get properties(){
         return {
             opened: {
-                type: Boolean,
-                notify: true
+                type: Boolean
             },
             priceclasses: {
                 type: Object,
@@ -48,7 +46,7 @@ class PricingDialog extends LitElement {
     open(){
         this.opened =true;
     }
-    render({opened}){
+    _render({opened}){
         let priceclasses = [
             {class: 'tot 10 km²',gebouwen: 275,hoogtelijnen: 55,bodemgebieden: 30,totaal: 324},
             {class: 'tot 25 km²',gebouwen: 145,hoogtelijnen: 35,bodemgebieden: 17,totaal: 177},
@@ -85,7 +83,7 @@ class PricingDialog extends LitElement {
 		background:var(--geodan-button-hover);
 	}
 </style>
-  <paper-dialog id='dialog' opened='${opened}' on-opened-changed="${e => this.opened = e.target.opened}">
+  <paper-dialog id='dialog' opened='${opened}'>
   <h2>Prijsinformatie</h2>
   
   <paper-dialog-scrollable>

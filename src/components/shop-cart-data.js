@@ -18,20 +18,17 @@ class ShopCartData extends PolymerElement {
     hardness: Boolean,
     hokken: {
       type: Array,
-      value: () => [],
-      notify: true
+      value: () => []
     },
 
     numItems: {
       type: Number,
-      computed: '_computeNumItems(hokken.splices)',
-      notify: true
+      computed: '_computeNumItems(hokken.splices)'
     },
 
     total: {
       type: Number,
       //computed: '_computeTotal(hokken.splices)',
-      notify: true
     }
 
   }}

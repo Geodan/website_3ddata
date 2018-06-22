@@ -13,8 +13,7 @@ class OfferteDialog extends PolymerElement {
     static get properties(){
         return {
             opened: {
-                type: Boolean,
-                notify: true
+                type: Boolean
             },
             numItems: {
                 computed: '_calcNumItems(hokken.*)'

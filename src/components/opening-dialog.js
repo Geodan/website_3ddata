@@ -1,14 +1,13 @@
-import {LitElement,html} from '@polymer/lit-element/lit-element.js'
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { IronOverlayBehaviorImpl } from '@polymer/iron-overlay-behavior/iron-overlay-behavior.js';
-import '@polymer/paper-dialog/paper-dialog.js';
-import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import {LitElement,html} from "@polymer/lit-element"
+import { IronOverlayBehaviorImpl } from "@polymer/iron-overlay-behavior/iron-overlay-behavior.js";
+import "@polymer/paper-dialog/paper-dialog.js";
+import "@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js";
+import "@polymer/paper-button/paper-button.js";
+import "@polymer/iron-flex-layout/iron-flex-layout-classes.js";
 
 
 class OpeningDialog extends LitElement {
-    static get is() { return 'opening-dialog'; }
+    static get is() { return "opening-dialog"; }
     static get properties(){
         return {
             opened: {
@@ -22,7 +21,7 @@ class OpeningDialog extends LitElement {
     }
     //static get template() {
     //   return `
-    render({opened}){
+    _render({opened}){
         return html`
     
 <style include="iron-flex iron-flex-alignment"></style>
@@ -42,7 +41,7 @@ class OpeningDialog extends LitElement {
 		background:var(--geodan-button-hover);
 	}
 </style>
-  <paper-dialog id='dialog' opened='${opened}' on-opened-changed="${e => this.opened = e.target.opened}">
+  <paper-dialog id="dialog" opened="${opened}">
   <h2>3Ddatalab.nl 3D-modellen voor SRM2-geluidsstudies</h2>
   <paper-dialog-scrollable>
     

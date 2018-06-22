@@ -1,8 +1,10 @@
 import {LitElement,html} from '@polymer/lit-element/lit-element.js'
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { connect } from 'pwa-helpers/connect-mixin.js';
+import { addToCart, removeFromCart } from '../actions/cart.js';
+
 import 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js';
 
-class  MbMap extends LitElement {
+class  MbMap extends connect(store)(LitElement) {
 	static get is() { return 'mb-map'; }
 	// Public property API that triggers re-render (synched with attributes)
 	static get properties() {
@@ -11,8 +13,7 @@ class  MbMap extends LitElement {
                 type: Object
             },
             selectedHokken: {
-                type: Array,
-                notify: true
+                type: Array
             }
         }
     }
@@ -167,9 +168,11 @@ class  MbMap extends LitElement {
                     var i = self.selectedHokken.indexOf(feature.properties.uid);
                     if (i < 0) {
                         self.selectedHokken.push(feature.properties.uid);
+                        store.dispatch(addToCart(feature.properties.uid));
                     }
                     else {
                         self.selectedHokken.splice(i,1);
+                        store.dispatch(removeFromCart(feature.properties.uid));
                     }
                 });
 
@@ -188,7 +191,11 @@ class  MbMap extends LitElement {
         filter = filter.concat(this.selectedHokken);
         this.map.setFilter("kmhokken-highlighted", filter);
     }
-    render({}){
+    // This is called every time something is updated in the store.
+    _stateChanged(state) {
+        this.selectedHokken = state.selectedHokken;
+    }
+    _render({}){
         return html`
             <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
             <div id='map' style='width: 100%; height: 1000px;'></div>

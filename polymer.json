@@ -3,10 +3,10 @@
   "moduleResolution": "node",
   "entrypoint": "index.html",
   "shell": "src/verkoop-app.js",
-  "fragments": [
-    "src/offerte-dialog.js",
-    "src/opening-dialog.js",
-    "src/pricing-dialog.js"
+  "extraDependencies": [
+    "manifest.json",
+    "node_modules/@webcomponents/webcomponentsjs/**",
+    "push-manifest.json"
   ],
   "sources": [
     "src/**/*",
@@ -19,13 +19,60 @@
   },
   "builds": [
     {
-      "preset": "es5-bundled"
+      "name": "esm-bundled",
+      "browserCapabilities": [
+        "es2015",
+        "modules"
+      ],
+      "js": {
+        "minify": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "bundle": true,
+      "addServiceWorker": true,
+      "basePath":"/"
     },
     {
-      "preset": "es6-unbundled"
+      "name": "es6-bundled",
+      "browserCapabilities": [
+        "es2015"
+      ],
+      "js": {
+        "compile": "es2015",
+        "minify": true,
+        "transformModulesToAmd": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "bundle": true,
+      "addServiceWorker": true,
+      "basePath":"/"
     },
     {
-      "preset": "es6-bundled"
+      "name": "es5-bundled",
+      "js": {
+        "compile": "es5",
+        "minify": true,
+        "transformModulesToAmd": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "bundle": true,
+      "addServiceWorker": true,
+      "basePath":"/"
     }
   ]
 }

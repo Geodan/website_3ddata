@@ -1,6 +1,6 @@
-//import { LitElement,html } from '@polymer/lit-element/lit-element.js';
-//import { html } from '../../node_modules/lit-html/lib/lit-extended.js';
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LitElement,html } from '@polymer/lit-element';
+import { repeat } from 'lit-html/lib/repeat.js';
+
 //import {html, render} from '@polymer/lit-html/lit-html.js';
 import '@polymer/app-layout/app-header/app-header.js';
 import '@polymer/app-layout/app-header-layout/app-header-layout.js';
@@ -32,6 +32,10 @@ import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
 
+import { connect } from 'pwa-helpers/connect-mixin.js';
+import { store } from '../store.js';
+import { addHok, removeHok, updateOffline, updateDrawerState, updateLayout } from '../actions/app.js';
+
 //import "https://unpkg.com/shapefile@0.6";
 //import "https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.3/turf.min.js";
 //import "https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js";
@@ -44,13 +48,14 @@ import './pricing-dialog.js';
 import './gm-search.js';
 
 
-class VerkoopApp extends PolymerElement {
+class VerkoopApp extends connect(store)(LitElement) {
 	static get is() { return 'verkoop-app'; }
 	static get properties() {
 		return {
 			buildings:  Boolean,
 			breaklines: Boolean,
 			hardness: Boolean,
+			selectedHokken: Array,
 			hokken: Array,
 			numItems: Number,
 			total: Number,
@@ -72,29 +77,46 @@ class VerkoopApp extends PolymerElement {
 		this.total = 0;
 	}
 	_hok(e){
-		this.$.cart.setItem(e.detail);
+		this.shadowRoot.querySelector('#cart').setItem(e.detail);
 	}
 	deselectAll(){
 		this.hokken = [];
-		this.$.map.deselectAll();
+		this.shadowRoot.querySelector('#map').deselectAll();
 	}
 	zoomTo(coords){
-		this.$.map.zoomTo(coords);
+		this.shadowRoot.querySelector('#map').zoomTo(coords);
 	}
 	ready(){
 		super.ready();
-		this.$.openingdialog.open();
+		//this.shadowRoot.querySelector('#openingdialog').open();
 	}
 	openopeningdialog(){
-		this.$.openingdialog.open();
+		//this.shadowRoot.querySelector('#openingdialog').open();
 	}
 	openpricingdialog(){
-		this.$.pricingdialog.open();
+		//this.shadowRoot.querySelector('#pricingdialog').open();
 	}
 	openoffertedialog(){
-		this.$.offertedialog.open();
+		//this.shadowRoot.querySelector('#offertedialog').open();
 	}
-	static get template() {
+	// If you don’t implement this method, you will get a
+	// warning in the console.
+	_stateChanged(state) {
+		//this.count = state.data.count;
+	}
+	//static get template() {
+	_render({
+		buildings,	
+		breaklines,	
+		hardness,	
+		hokken,	
+		numItems,	
+		total,	
+		_openingdialogopenend,	
+		_offertedialogopenend,	
+		_pricingdialogopenend,
+		selectedHokken
+		}) {
 		return html`
 	
 <style include="iron-flex iron-flex-alignment"></style>
@@ -217,12 +239,12 @@ class VerkoopApp extends PolymerElement {
     }
  
  </style>
- <shop-cart-data id='cart' total='{{total}}' num-items='{{numItems}}' hokken='{{hokken}}' buildings='[[buildings]]' breaklines='[[breaklines]]' hardness='[[hardness]]'></shop-cart-data>
- <opening-dialog id='openingdialog' opened="[[_openingdialogopenend]]"></opening-dialog>
- <pricing-dialog id='pricingdialog' opened="[[_pricingdialogopenend]]"></pricing-dialog>
- <offerte-dialog id='offertedialog' opened="[[_offertedialogopenend]]" buildings="[[buildings]]" breaklines="[[breaklines]]" hardness="[[hardness]]" hokken="[[hokken]]" total="[[total]]"></offerte-dialog>
+ <shop-cart-data id="cart" total="${total}" num-items="${numItems}" hokken="${hokken}" buildings="${buildings}" breaklines="${breaklines}" hardness="${hardness}"></shop-cart-data>
+ <opening-dialog id="openingdialog" opened="${_openingdialogopenend}"></opening-dialog>
+ <pricing-dialog id="pricingdialog" opened="${_pricingdialogopenend}"></pricing-dialog>
+ <offerte-dialog id="offertedialog" opened="${_offertedialogopenend}" buildings="${buildings}" breaklines="${breaklines}" hardness="${hardness}" hokken="${hokken}" total="${total}"></offerte-dialog>
  <app-drawer-layout fullbleed>
-		<app-drawer slot="drawer" id='menu' >
+		<app-drawer slot="drawer" id="menu" >
 		
 			<app-toolbar class="medium-tall">
 			</app-toolbar>
@@ -239,9 +261,9 @@ class VerkoopApp extends PolymerElement {
 				<div class="step">
 					<b>Gewenste bestanden</b>
 					<p>
-						<paper-checkbox checked="{{buildings}}">Gebouwen</paper-checkbox><br/>
-						<paper-checkbox checked="{{breaklines}}">Hoogtelijnen</paper-checkbox><br/>
-						<paper-checkbox checked="{{hardness}}">Bodemvlakken</paper-checkbox>
+						<paper-checkbox checked="${buildings}">Gebouwen</paper-checkbox><br/>
+						<paper-checkbox checked="${breaklines}">Hoogtelijnen</paper-checkbox><br/>
+						<paper-checkbox checked="${hardness}">Bodemvlakken</paper-checkbox>
 					</p>
 				</div>
 				
@@ -258,8 +280,8 @@ class VerkoopApp extends PolymerElement {
 					<b>Bestel</b>
 					<div class="horizontal layout justified">
 						<div>
-							Geselecteerd: <span>[[numItems]]</span> km&sup2;<br/>
-							Totaal: &euro; <span>[[total]]</span>,-
+							Geselecteerd: <span>${numItems}</span> km&sup2;<br/>
+							Totaal: &euro; <span>${total}</span>,-
 						</div>
 						<div class="flex"></div>
 						<paper-icon-button id="offerbutton" icon="shopping-cart" on-click="openoffertedialog"></paper-icon-button>
@@ -295,7 +317,12 @@ class VerkoopApp extends PolymerElement {
 			</app-header>
 			<div class="flex">
 				<content></content>
-				<mb-map id="map" selectedHokken="[[this.selectedHokken]]" on-hok="_hok"></mb-map>
+				<mb-map id="map" 
+					selectedHokken="${selectedHokken}" 
+					on-hok="_hok"
+					on-hok-added="${e => store.dispatch(addHok(e.target.uid))}"
+					on-hok-removed="${e => store.dispatch(removeHok(e.target.uid))}"
+				></mb-map>
 			</div>
 	</app-header-layout>
 	

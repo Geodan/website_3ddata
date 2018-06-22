@@ -1,8 +1,5 @@
 import {LitElement,html} from '@polymer/lit-element/lit-element.js'
-import { repeat } from '../../node_modules/lit-html/lib/repeat.js';
-//import { repeat } from '@polymer/polymer/lib/elements/dom-repeat.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-
+import { repeat } from 'lit-html/lib/repeat.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/iron-icon/iron-icon.js';
@@ -20,8 +17,7 @@ class GmGeosearch extends LitElement {
                 type: String
             },
             key: {
-                type: String,
-                notify: true
+                type: String
                 //observer: '_keyChanged'
             },
             suggestions: {
@@ -34,17 +30,14 @@ class GmGeosearch extends LitElement {
             },
             location: {
                 //deprecated
-                type: Object,
-                notify: true
+                type: Object
             },
             lastLocation: {
                 //to replace location
-                type: Object,
-                notify: true
+                type: Object
             },
             lastBoundary: {
-                type: Object,
-                notify: true
+                type: Object
 			},
 			listUrl: String
         }
@@ -107,7 +100,7 @@ class GmGeosearch extends LitElement {
 		
 	}
 	
-	render({ listUrl , searchUrl , suggestions }){
+	_render({ listUrl , searchUrl , suggestions }){
 		return html`
 		<style>
 		paper-item {
