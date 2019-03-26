@@ -1,4 +1,4 @@
-import {LitElement,html} from '@polymer/lit-element/lit-element.js'
+import {LitElement,html} from 'lit-element/lit-element.js'
 import { repeat } from 'lit-html/lib/repeat.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-selector/iron-selector.js';

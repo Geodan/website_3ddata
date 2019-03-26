@@ -1,4 +1,4 @@
-import { LitElement,html } from '@polymer/lit-element';
+import { LitElement,html } from 'lit-element';
 import { repeat } from 'lit-html/lib/repeat.js';
 
 //import {html, render} from '@polymer/lit-html/lit-html.js';

@@ -1,4 +1,4 @@
-import {LitElement,html} from '@polymer/lit-element/lit-element.js'
+import {LitElement,html} from 'lit-element/lit-element.js'
 import { repeat } from 'lit-html/lib/repeat.js';
 import { IronOverlayBehaviorImpl } from '@polymer/iron-overlay-behavior/iron-overlay-behavior.js';
 import '@polymer/paper-dialog/paper-dialog.js';

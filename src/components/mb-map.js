@@ -1,4 +1,4 @@
-import {LitElement,html} from '@polymer/lit-element/lit-element.js'
+import {LitElement,html} from 'lit-element/lit-element.js'
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import { addToCart, removeFromCart } from '../actions/cart.js';
 
